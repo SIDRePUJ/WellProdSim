@@ -1,17 +1,17 @@
 package wpsWorld.Helper;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import wpsViewer.Agent.wpsReport;
+
+import BESA.Util.FileLoader;
 
 /**
  * Singleton pojo of the world configuration keys
  */
 public class WorldConfiguration {
     
-    private static final String CONF_NAME = "resources/wpsConfig.properties";
+    private static final String CONF_NAME = "wpsConfig.properties";
     private static WorldConfiguration instance = null;
     private Properties appProperties;
     private boolean diseasePerturbation = false;
@@ -22,19 +22,14 @@ public class WorldConfiguration {
      */
     private WorldConfiguration() {
 
-        try (InputStream in = new FileInputStream(CONF_NAME)) {
-
-            if (in == null) {
-                wpsReport.error("Sorry, unable to find app.properties");
-                return;
-            }
+        try (InputStream in = FileLoader.readFileToFileInputStream(CONF_NAME)) {
 
             //load a properties file from class path, inside static method
             this.appProperties = new Properties();
             this.appProperties.load(in);
 
         } catch (IOException ex) {
-            wpsReport.error("No app config file found!!");
+            System.err.println("No app config file found!!");
             ex.printStackTrace();
         }
 

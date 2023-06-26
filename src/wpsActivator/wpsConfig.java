@@ -14,15 +14,13 @@
  */
 package wpsActivator;
 
+import BESA.Util.FileLoader;
 import org.snakeyaml.engine.v2.api.Load;
 import org.snakeyaml.engine.v2.api.LoadSettings;
 import com.google.gson.Gson;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -56,7 +54,6 @@ public final class wpsConfig {
 
     /**
      *
-     * @return
      */
     public static wpsConfig getInstance() {
         return INSTANCE;
@@ -64,7 +61,6 @@ public final class wpsConfig {
 
     /**
      *
-     * @param args
      */
     private wpsConfig() {
         loadPeasantConfig();
@@ -178,7 +174,7 @@ public final class wpsConfig {
 
         try {
             // Especifica la ubicación del archivo .properties
-            fileInputStream = new FileInputStream("resources/wpsConfig.properties");
+            fileInputStream = FileLoader.readFileToFileInputStream("wpsConfig.properties");
             // Carga las propiedades desde el archivo
             properties.load(fileInputStream);
 
@@ -221,9 +217,7 @@ public final class wpsConfig {
 
         Properties properties = new Properties();
 
-        ClassLoader classLoader = getClass().getClassLoader();
-
-        try (InputStream fileInputStream = classLoader.getResourceAsStream("wpsConfig.properties")) {
+        try (InputStream fileInputStream = FileLoader.readFileToFileInputStream("wpsConfig.properties")) {
             properties.load(fileInputStream);
             this.startSimulationDate = properties.getProperty("control.startdate");
             this.BankAgentName = properties.getProperty("bank.name");
@@ -248,28 +242,22 @@ public final class wpsConfig {
             String jsonData;
             String yamlContent;
             Gson gson = new Gson();
-            InputStream inputStream;
 
-            //yamlContent = new String(Files.readAllBytes(Paths.get("resources/wpsStablePeasant.yml")));
-            inputStream = getClass().getClassLoader().getResourceAsStream("wpsStablePeasant.yml");
-            yamlContent = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
-
+            yamlContent = FileLoader.readFile("wpsStablePeasant.yml");
             data = (Map<String, Object>) load.loadFromString(yamlContent);
             wpsReport.info("Configuración RegularPeasant cargada con exito");
             Map<String, Object> regularPeasant = (Map<String, Object>) data.get("StablePeasant");
             jsonData = gson.toJson(regularPeasant);
             stableFarmerProfile = gson.fromJson(jsonData, PeasantFamilyProfile.class);
 
-            inputStream = getClass().getClassLoader().getResourceAsStream("wpsHighriskPeasant.yml");
-            yamlContent = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+            yamlContent = FileLoader.readFile("wpsHighriskPeasant.yml");
             data = (Map<String, Object>) load.loadFromString(yamlContent);
             wpsReport.info("Configuración LazyPeasant cargada con exito");
             Map<String, Object> lazyPeasant = (Map<String, Object>) data.get("HighriskPeasant");
             jsonData = gson.toJson(lazyPeasant);
             highriskFarmerProfile = gson.fromJson(jsonData, PeasantFamilyProfile.class);
 
-            inputStream = getClass().getClassLoader().getResourceAsStream("wpsThrivingPeasant.yml");
-            yamlContent = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+            yamlContent = FileLoader.readFile("wpsThrivingPeasant.yml");
             data = (Map<String, Object>) load.loadFromString(yamlContent);
             wpsReport.info("Configuración ProactivePeasant cargada con exito");
             Map<String, Object> proactivePeasant = (Map<String, Object>) data.get("ThrivingPeasant");

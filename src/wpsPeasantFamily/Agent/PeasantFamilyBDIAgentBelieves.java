@@ -66,8 +66,8 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
 
     /**
      *
-     * @param alias
-     * @param peasantProfile
+     * @param alias Peasant Family Alias
+     * @param peasantProfile profile of the peasant family
      */
     public PeasantFamilyBDIAgentBelieves(String alias, PeasantFamilyProfile peasantProfile) {
         this.setPeasantProfile(peasantProfile);

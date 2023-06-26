@@ -1,13 +1,11 @@
 package wpsWorld.Helper;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import wpsViewer.Agent.wpsReport;
+import BESA.Util.FileLoader;
 import wpsWorld.layer.data.MonthData;
 
 /**
@@ -18,16 +16,12 @@ public class MonthlyDataLoader {
 
     /**
      *
-     * @param dataFileLocation
-     * @return
-     * @throws IOException
+     * @param dataFileLocation The location of the file to load
+     * @return  A list of MonthData objects
+     * @throws IOException If the file is not found
      */
     public static List<MonthData> loadMonthlyDataFile(String dataFileLocation) throws IOException {
-        //wpsReport.info(dataFileLocation);
-        InputStream in = new FileInputStream(dataFileLocation);
-        //ClassLoader classLoader = MonthlyDataLoader.class.getClassLoader();
-        //File jsonFile = new File(classLoader.getResource(dataFileLocation).getFile());
-        String jsonContent = new String(in.readAllBytes());//Files.readAllBytes(Paths.get(jsonFile.toURI())), StandardCharsets.UTF_8);
+        String jsonContent = FileLoader.readFile(dataFileLocation);
         return jsonToMonthlyData(jsonContent, dataFileLocation);
     }
 
@@ -43,7 +37,6 @@ public class MonthlyDataLoader {
             monthData.setStandardDeviation(currentObject.getDouble("standardDeviation"));
             monthlyData.add(monthData);
         });
-        //wpsReport.info("Cargando " + dataFileLocation + " ... OK");
         return monthlyData;
     }
 }
