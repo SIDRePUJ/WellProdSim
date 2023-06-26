@@ -53,7 +53,8 @@ public class CheckCropsTask extends Task {
         // @TODO: falta calcular el tiempo necesario para el cultivo
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
 
-        if (believes.getPeasantProfile().getWaterAvailable() < 20) {
+        double waterUsed = believes.getPeasantProfile().getCropSizeHA() * 30;
+        if (believes.getPeasantProfile().getWaterAvailable() <= waterUsed) {
             believes.setCurrentResourceNeededType(ResourceNeededType.WATER);
         }
 
@@ -96,7 +97,6 @@ public class CheckCropsTask extends Task {
         this.setTaskFinalized();
 
         //wpsReport.warn(believes.toJson());
-
     }
 
     /**

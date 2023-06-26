@@ -16,12 +16,13 @@ HighriskPeasant:
   health: 80
   peasantFamilyMinimalVital: 5000
   rainfallConditions: normal
-  farmSize: 1000
+  cropSize: 2000
   seeds: 1000
   startRiceSeason: 05/01/2022
   currentCropName: ñame
   money: 1100000
   waterAvailable: 0
+  variance: 0.1
   #Peasant
   peasantKind: HighriskPeasant
   purpose: ""  

@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -66,7 +67,6 @@ public final class wpsConfig {
      * @param args
      */
     private wpsConfig() {
-
         loadPeasantConfig();
         loadWPSConfig();
         this.peasantSerialID = 1;
@@ -248,22 +248,28 @@ public final class wpsConfig {
             String jsonData;
             String yamlContent;
             Gson gson = new Gson();
+            InputStream inputStream;
 
-            yamlContent = new String(Files.readAllBytes(Paths.get("resources/wpsStablePeasant.yml")));
+            //yamlContent = new String(Files.readAllBytes(Paths.get("resources/wpsStablePeasant.yml")));
+            inputStream = getClass().getClassLoader().getResourceAsStream("wpsStablePeasant.yml");
+            yamlContent = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+
             data = (Map<String, Object>) load.loadFromString(yamlContent);
             wpsReport.info("Configuración RegularPeasant cargada con exito");
             Map<String, Object> regularPeasant = (Map<String, Object>) data.get("StablePeasant");
             jsonData = gson.toJson(regularPeasant);
             stableFarmerProfile = gson.fromJson(jsonData, PeasantFamilyProfile.class);
 
-            yamlContent = new String(Files.readAllBytes(Paths.get("resources/wpsHighriskPeasant.yml")));
+            inputStream = getClass().getClassLoader().getResourceAsStream("wpsHighriskPeasant.yml");
+            yamlContent = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
             data = (Map<String, Object>) load.loadFromString(yamlContent);
             wpsReport.info("Configuración LazyPeasant cargada con exito");
             Map<String, Object> lazyPeasant = (Map<String, Object>) data.get("HighriskPeasant");
             jsonData = gson.toJson(lazyPeasant);
             highriskFarmerProfile = gson.fromJson(jsonData, PeasantFamilyProfile.class);
 
-            yamlContent = new String(Files.readAllBytes(Paths.get("resources/wpsThrivingPeasant.yml")));
+            inputStream = getClass().getClassLoader().getResourceAsStream("wpsThrivingPeasant.yml");
+            yamlContent = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
             data = (Map<String, Object>) load.loadFromString(yamlContent);
             wpsReport.info("Configuración ProactivePeasant cargada con exito");
             Map<String, Object> proactivePeasant = (Map<String, Object>) data.get("ThrivingPeasant");
@@ -271,7 +277,7 @@ public final class wpsConfig {
             thrivingFarmerProfile = gson.fromJson(jsonData, PeasantFamilyProfile.class);
 
         } catch (IOException ex) {
-            wpsReport.error("No hay configuración válida");
+            System.err.println("No hay configuración válida");
             System.exit(0);
         }
     }
@@ -282,17 +288,22 @@ public final class wpsConfig {
     }
 
     public PeasantFamilyProfile getFarmerProfile() {
-        
-        double rnd = 1 + generateRandomNumber(-0.1, 0.1);
-        wpsReport.debug(rnd + " numero");
 
-        PeasantFamilyProfile pfProfile = this.getThrivingFarmerProfile();
+        PeasantFamilyProfile pfProfile = this.getHighriskFarmerProfile();
+        //.getThrivingFarmerProfile();
+        //.getStableFarmerProfile()
+
+        double rnd = 1 + generateRandomNumber(
+                pfProfile.getVariance() * -1,
+                pfProfile.getVariance()
+        );
+        wpsReport.debug(rnd + " numero");
 
         pfProfile.setHealth((int) (pfProfile.getHealth() * rnd));
         pfProfile.setMoney((int) (pfProfile.getMoney() * rnd));
         pfProfile.setWaterAvailable((int) (pfProfile.getWaterAvailable() * rnd));
         pfProfile.setSeeds((int) (pfProfile.getSeeds() * rnd));
-        pfProfile.setFarmSize((int) (pfProfile.getFarmSize() * rnd));
+        pfProfile.setCropSize((int) (pfProfile.getCropSize() * rnd));
 
         return pfProfile;
     }

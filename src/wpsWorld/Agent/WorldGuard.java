@@ -99,10 +99,12 @@ public class WorldGuard extends GuardBESA {
                 //wpsReport.info("Irrigation on the crop, date: " + worldMessage.getDate());
                 String cropIdToIrrigate = worldMessage.getCropId();
                 String defaultWaterQuantity = this.worldConfig.getProperty("crop.defaultValuePerIrrigation");
+                int irrigateValue = Integer.valueOf(defaultWaterQuantity) * worldState.getCropLayer().getCropCellById(cropIdToIrrigate).getCropArea();
                 worldState.getCropLayer().addIrrigationEvent(
                         cropIdToIrrigate,
-                        defaultWaterQuantity,
-                        worldMessage.getDate());
+                        String.valueOf(irrigateValue),
+                        worldMessage.getDate()
+                );
                 peasantMessage = new FromWorldMessage(
                         FromWorldMessageType.CROP_INFORMATION_NOTIFICATION,
                         worldMessage.getPeasantAgentAlias(),

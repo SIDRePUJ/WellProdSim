@@ -49,9 +49,10 @@ public class IrrigateCropsTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        wpsReport.info("⚙️⚙️⚙️ Irrigación de cultivos");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
+
+        double waterUsed = believes.getPeasantProfile().getCropSizeHA() * 30;
 
         try {
             AdmBESA adm = AdmBESA.getInstance();
@@ -70,13 +71,13 @@ public class IrrigateCropsTask extends Task {
                     worldMessage);
             ah.sendEvent(ev);
 
-            believes.getPeasantProfile().useWater(10);
+            believes.getPeasantProfile().useWater((int) waterUsed);
             believes.setCurrentCropCare(CropCareType.NONE);
 
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex);
         }
-
+        wpsReport.info("🚰🚰🚰🚰 Irrigación de cultivos con " + waterUsed);
         //this.setTaskFinalized();
 
     }

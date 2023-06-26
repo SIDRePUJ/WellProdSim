@@ -11,7 +11,7 @@ import wpsViewer.Agent.wpsReport;
  */
 public class WorldConfiguration {
     
-    private static final String CONF_NAME = "resources/app.properties";
+    private static final String CONF_NAME = "resources/wpsConfig.properties";
     private static WorldConfiguration instance = null;
     private Properties appProperties;
     private boolean diseasePerturbation = false;

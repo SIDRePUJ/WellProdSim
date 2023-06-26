@@ -86,8 +86,9 @@ public class IrrigateCropsGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        int waterUsed = (believes.getPeasantProfile().getCropSize()/1000) * 30;
         if (believes.getCurrentCropCare() == CropCareType.IRRIGATION
-                && believes.getPeasantProfile().getWaterAvailable() >= 10) {
+                && believes.getPeasantProfile().getWaterAvailable() >= waterUsed) {
             //wpsReport.info(believes.getCurrentCropCare() + " -- " + believes.getPeasantProfile().getWaterAvailable());
             return 1;
         } else {

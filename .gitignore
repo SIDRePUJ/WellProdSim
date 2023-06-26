@@ -2,3 +2,4 @@
 /dist/
 .DS_Store
 *.log
+*_water_stress_.csv

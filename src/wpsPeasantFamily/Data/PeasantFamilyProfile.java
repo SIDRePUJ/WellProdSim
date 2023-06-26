@@ -28,6 +28,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     private String peasantFamilyAlias;
     private double peasantFamilyMinimalVital;
     private int health;
+    private double variance;
     private double productivity;
     private double wellBeging;
     private boolean worker;
@@ -100,6 +101,12 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      *
      */
     public PeasantFamilyProfile() {
+    }
+    public double getVariance() {
+        return variance;
+    }
+    public void setVariance(double variance) {
+        this.variance = variance;
     }
 
     public String getRainfallConditions() {
@@ -446,12 +453,15 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     public int getCropSize() {
         return cropSize;
     }
+    public double getCropSizeHA() {
+        return cropSize / 1000;
+    }
 
     /**
      *
      * @param cropSize
      */
-    public synchronized void setFarmSize(int cropSize) {
+    public synchronized void setCropSize(int cropSize) {
         this.cropSize = cropSize;
     }
 
@@ -1505,10 +1515,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
 
     public void increaseTotalHarvestedWeight(double harvested) {
         this.totalHarvestedWeight += harvested;
-    }
-
-    public double getFarmSize() {
-        return this.cropSize;
     }
 
 }

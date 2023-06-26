@@ -42,7 +42,7 @@ public class wpsStart {
     private static int PLANID = 0;
     final private static double PASSWD = 0.91;
     public static wpsConfig config;
-    public static int peasantFamiliesAgents = 5;
+    public static int peasantFamiliesAgents = 1;
     private final static int SIMTIME = 15;
     public final static int DAYSTOCHECK = 7;
     static final long startTime = System.currentTimeMillis();
@@ -53,7 +53,7 @@ public class wpsStart {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+
         printHeader();
         config = wpsConfig.getInstance();
 
@@ -156,7 +156,7 @@ public class wpsStart {
         }
         adm.kill(0.09);
         // Calcular el tiempo transcurrido en milisegundos
-        wpsReport.info("Simulation finished in " + ((System.currentTimeMillis() - startTime)/1000) +" seconds.\n\n\n\n");
+        wpsReport.info("Simulation finished in " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds.\n\n\n\n");
         System.exit(0);
 
     }
