@@ -35,13 +35,11 @@ import wpsViewer.Agent.wpsReport;
  */
 public class PeasantOffTask extends Task {
 
-    private boolean finished;
 
     /**
      *
      */
     public PeasantOffTask() {
-        this.finished = false;
     }
 
     /**
@@ -59,25 +57,8 @@ public class PeasantOffTask extends Task {
         believes.setNewDay(false);
         believes.useTime(believes.getTimeLeftOnDay());
         
-        if (believes.getCurrentDay() % wpsStart.DAYSTOCHECK == 0) {
-            try {
-                believes.setWeekBlock();
-                wpsReport.warn(believes.getWeekBlock());
-                AdmBESA adm = AdmBESA.getInstance();
-                ToControlMessage toControlMessage = new ToControlMessage(
-                        believes.getPeasantProfile().getPeasantFamilyAlias(),
-                        believes.getCurrentDay(),
-                        believes.getPeasantProfile().getHealth() <= 0
-                );
-                EventBESA eventBesa = new EventBESA(
-                        ControlAgentGuard.class.getName(),
-                        toControlMessage
-                );
-                AgHandlerBESA agHandler = adm.getHandlerByAlias(wpsStart.config.getControlAgentName());
-                agHandler.sendEvent(eventBesa);
-            } catch (ExceptionBESA ex) {
-                wpsReport.error(ex);
-            }
+        if (believes.getCurrentDay() % wpsStart.DAYS_TO_CHECK == 0) {
+            believes.setWeekBlock();
         }
         this.setTaskFinalized();
     }

@@ -74,7 +74,7 @@ public class ObtainSeedsTask extends Task {
             ah.sendEvent(ev);
 
         } catch (ExceptionBESA ex) {
-            wpsReport.error(ex);
+            wpsReport.error(ex, "ObtainSeedsTask.executeTask( )");
         }
         believes.setCurrentResourceNeededType(ResourceNeededType.NONE);
         this.setFinished();

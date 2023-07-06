@@ -42,6 +42,7 @@ public class LeisureActivitiesTask extends Task {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.useTime(believes.getTimeLeftOnDay());
         believes.setCurrentPeasantLeisureType(PeasantLeisureType.NONE);
+        this.setTaskFinalized();
     }
 
     /**

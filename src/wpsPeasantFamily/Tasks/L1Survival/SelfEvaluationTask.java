@@ -25,14 +25,12 @@ import wpsViewer.Agent.wpsReport;
  */
 public class SelfEvaluationTask extends Task {
     
-    private boolean finished;
 
     /**
      *
      */
     public SelfEvaluationTask() {
         ////wpsReport.info("");
-        this.finished = false;
     }
 
     /**

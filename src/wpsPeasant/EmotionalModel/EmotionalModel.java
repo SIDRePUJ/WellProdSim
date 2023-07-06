@@ -95,10 +95,10 @@ public abstract class EmotionalModel {
     public void processEmotionalEvent(EmotionalEvent ev) {
         float i = estimateEmotionIntensity(ev);
         if (ev.getPerson() != null) {
-            wpsReport.info("XEREVENTO: " + ev + " Valencia" + i);
+            //wpsReport.info("XEREVENTO: " + ev + " Valencia" + i);
         }
         emotionalState.updateEmotions(ev.getEvent(), i);
-        wpsReport.info(ev.toString());
+        //wpsReport.info(ev.toString());
         emotionalStateChanged();
     }
 
@@ -184,7 +184,7 @@ public abstract class EmotionalModel {
                 typeName = "Objetos";
             }
             String msg = "El diccionario semántico de " + typeName + " no contiene un item con el nombre " + key;
-            wpsReport.info("ERROR: " + msg);
+            //wpsReport.info("ERROR: " + msg);
             Logger.getLogger(EmotionalModel.class.getName()).log(Level.WARNING, msg);
         }
     }

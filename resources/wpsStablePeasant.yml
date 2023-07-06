@@ -15,14 +15,14 @@ StablePeasant:
   #Variables
   health: 100
   peasantFamilyMinimalVital: 10000
-  rainfallConditions: wet
+  rainfallConditions: normal
   cropSize: 5000
   seeds: 1000
   startRiceSeason: 01/05/2022
   currentCropName: ñame
   money: 2200000
   waterAvailable: 500
-  variance: 0.1
+  variance: 0.4
   #Peasant
   peasantKind: StablePeasant
   purpose: ""  

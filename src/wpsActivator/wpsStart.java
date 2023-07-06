@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -19,9 +19,11 @@ import BESA.Kernel.Agent.AgentBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
+
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+
 import wpsControl.Agent.ControlAgent;
 import wpsControl.Agent.ControlCurrentDate;
 import wpsPeasantFamily.Agent.Guards.StatusGuard;
@@ -39,12 +41,12 @@ import wpsViewer.Agent.wpsViewerAgent;
  */
 public class wpsStart {
 
-    private static int PLANID = 0;
+    private static int PLAN_ID = 0;
     final private static double PASSWD = 0.91;
     public static wpsConfig config;
-    public static int peasantFamiliesAgents = 1;
-    private final static int SIMTIME = 15;
-    public final static int DAYSTOCHECK = 7;
+    public static int peasantFamiliesAgents = 100;
+    private final static int SIMULATION_TIME = 15;
+    public final static int DAYS_TO_CHECK = 7;
     static final long startTime = System.currentTimeMillis();
 
     /**
@@ -54,7 +56,6 @@ public class wpsStart {
      */
     public static void main(String[] args) {
 
-        printHeader();
         config = wpsConfig.getInstance();
 
         // Set init date of simulation
@@ -90,11 +91,11 @@ public class wpsStart {
                     marketAgent,
                     perturbationAgent
             );
+            printHeader();
 
-        } catch (ExceptionBESA ex) {
-            wpsReport.error(ex);
+
         } catch (Exception ex) {
-            wpsReport.error(ex);
+            wpsReport.error(ex, "wpsStart");
         }
     }
 
@@ -104,23 +105,23 @@ public class wpsStart {
      * @return the next plan ID
      */
     public static int getPlanID() {
-        return ++PLANID;
+        return ++PLAN_ID;
     }
 
     /**
      * Starts all the agents and begins the simulation.
      *
      * @param peasantFamilies the list of peasant family agents
-     * @param agents the other simulation agents
+     * @param wpsAgents the other simulation agents
      * @throws ExceptionBESA if there is an exception while starting the agents
      */
-    private static void startAllAgents(List<PeasantFamilyBDIAgent> peasantFamilies, AgentBESA... A) throws ExceptionBESA {
+    private static void startAllAgents(List<PeasantFamilyBDIAgent> peasantFamilies, AgentBESA... wpsAgents) throws ExceptionBESA {
 
         try {
             // Starting general simulation agents
-            for (AgentBESA agent : A) {
+            for (AgentBESA agent : wpsAgents) {
                 agent.start();
-                wpsReport.info(agent.getAlias() + " Started");
+                wpsReport.info(agent.getAlias() + " Started", "wpsStart");
             }
             // Starting families agents
             for (PeasantFamilyBDIAgent peasantFamily : peasantFamilies) {
@@ -136,7 +137,7 @@ public class wpsStart {
             }
 
         } catch (ExceptionBESA ex) {
-            wpsReport.error(ex);
+            wpsReport.error(ex, "wpsStart");
         }
 
         stopSimulationByTime();
@@ -147,6 +148,7 @@ public class wpsStart {
      *
      * @throws ExceptionBESA if there is an exception while stopping the agents
      */
+    @SuppressWarnings("rawtypes")
     public static void stopSimulation() throws ExceptionBESA {
         getStatus();
         AdmBESA adm = AdmBESA.getInstance();
@@ -155,8 +157,8 @@ public class wpsStart {
             adm.killAgent((String) enumeration.nextElement(), PASSWD);
         }
         adm.kill(0.09);
-        // Calcular el tiempo transcurrido en milisegundos
-        wpsReport.info("Simulation finished in " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds.\n\n\n\n");
+        // Calculate the time of simulation
+        wpsReport.info("Simulation finished in " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds.\n\n\n\n", "wpsStart");
         System.exit(0);
 
     }
@@ -165,10 +167,10 @@ public class wpsStart {
 
         // Closing simulation after X minutes
         try {
-            Thread.sleep((60 * SIMTIME) * 1000);
+            Thread.sleep((60 * SIMULATION_TIME) * 1000);
             stopSimulation();
         } catch (InterruptedException e) {
-            wpsReport.error(e.getMessage());
+            wpsReport.error(e.getMessage(), "wpsStart");
         }
 
     }
@@ -187,7 +189,7 @@ public class wpsStart {
             }
             Thread.sleep(5000);
         } catch (ExceptionBESA | InterruptedException ex) {
-            wpsReport.error(ex);
+            wpsReport.error(ex, "wpsStart");
         }
     }
 
@@ -197,23 +199,23 @@ public class wpsStart {
     public static void printHeader() {
 
         wpsReport.info("""
-                       
-                       
-                       
-                        * ==========================================================================
-                        *   __      __ _ __   ___           WellProdSim                            *
-                        *   \\ \\ /\\ / /| '_ \\ / __|          @version 1.0                           *
-                        *    \\ V  V / | |_) |\\__ \\          @since 2023                            *
-                        *     \\_/\\_/  | .__/ |___/                                                 *
-                        *             | |                   @author Jairo Serrano                  *
-                        *             |_|                   @author Enrique Gonzalez               *
-                        * ==========================================================================
-                        * Social Simulator used to estimate productivity and well-being of peasant *
-                        * families. It is event oriented, high concurrency, heterogeneous time     *
-                        * management and emotional reasoning BDI.                                  *
-                        * ==========================================================================
-                        
-                       """);
+                                       
+                                       
+                                       
+                 * ==========================================================================
+                 *   __      __ _ __   ___           WellProdSim                            *
+                 *   \\ \\ /\\ / /| '_ \\ / __|          @version 1.0                           *
+                 *    \\ V  V / | |_) |\\__ \\          @since 2023                            *
+                 *     \\_/\\_/  | .__/ |___/                                                 *
+                 *             | |                   @author Jairo Serrano                  *
+                 *             |_|                   @author Enrique Gonzalez               *
+                 * ==========================================================================
+                 * Social Simulator used to estimate productivity and well-being of peasant *
+                 * families. It is event oriented, high concurrency, heterogeneous time     *
+                 * management and emotional reasoning BDI.                                  *
+                 * ==========================================================================
+                 
+                """, "wpsStart");
     }
 
 }

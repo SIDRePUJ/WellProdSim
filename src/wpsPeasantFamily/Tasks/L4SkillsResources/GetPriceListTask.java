@@ -69,7 +69,7 @@ public class GetPriceListTask extends Task {
 
 
         } catch (ExceptionBESA ex) {
-            wpsReport.error(ex);
+            wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
     }
 

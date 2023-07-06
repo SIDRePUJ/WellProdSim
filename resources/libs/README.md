@@ -27,7 +27,7 @@
 
 ## English
 
-The libraries present in this folder are the intellectual property of their respective developers. They are included in this project only to facilitate the teaching of project compilation and to enable smoother operations. Please respect the licenses and rights associated with each library, do not use them outside of the context they were intended for.
+The libraries present in this folder are the intellectual property of their respective developers. They are included in this project only to facilitate the teaching of project compilation and to enable smoother operations. Please respect the licenses and rights associated with each library, do not use them outside the context they were intended for.
 
 For more details regarding a specific library, please check out the official documentation or contact the library owner directly.
 

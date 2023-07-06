@@ -78,7 +78,7 @@ public class PlantCropTask extends Task {
             );
 
         } catch (ExceptionBESA ex) {
-            wpsReport.error(ex);
+            wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
         believes.setCurrentSeason(SeasonType.GROWING);
         this.setTaskFinalized();

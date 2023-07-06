@@ -8,13 +8,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="BDIBESA" level="project" />
-    <orderEntry type="library" name="KernelBESA" level="project" />
-    <orderEntry type="library" name="RationalBESA" level="project" />
-    <orderEntry type="module" module-name="KernelBESA" />
-    <orderEntry type="module" module-name="RationalBESA" />
-    <orderEntry type="module" module-name="BDIBESA" />
-    <orderEntry type="module" module-name="LocalBESA" />
-    <orderEntry type="library" name="CommonLibs" level="project" />
+    <orderEntry type="module" module-name="KernelBESA" exported="" />
+    <orderEntry type="module" module-name="RationalBESA" exported="" />
+    <orderEntry type="module" module-name="BDIBESA" exported="" />
+    <orderEntry type="module" module-name="LocalBESA" exported="" />
+    <orderEntry type="library" exported="" name="CommonLibs" level="project" />
   </component>
 </module>

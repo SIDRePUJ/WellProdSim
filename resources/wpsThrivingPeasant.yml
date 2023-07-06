@@ -15,14 +15,14 @@ ThrivingPeasant:
   #Variables
   health: 100
   peasantFamilyMinimalVital: 18000
-  rainfallConditions: dry
+  rainfallConditions: wet
   cropSize: 10000
   seeds: 5000
   startRiceSeason: 01/05/2022
   currentCropName: ñame
   money: 5000000
   waterAvailable: 1000
-  variance: 0.1
+  variance: 0.4
   #Peasant
   peasantKind: ThrivingPeasant
   purpose: ""  

@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -34,6 +34,17 @@ public class DoVitalsGoal extends GoalBDI {
 
     /**
      *
+     * @param id
+     * @param role
+     * @param description
+     * @param type
+     */
+    public DoVitalsGoal(long id, RationalRole role, String description, GoalBDITypes type) {
+        super(id, role, description, type);
+    }
+
+    /**
+     *
      * @return
      */
     public static DoVitalsGoal buildGoal() {
@@ -43,23 +54,11 @@ public class DoVitalsGoal extends GoalBDI {
         RationalRole doVitalsRole = new RationalRole(
                 "DoVitalsTask",
                 doVitalsPlan);
-        DoVitalsGoal doVitalsGoalBDI = new DoVitalsGoal(
+        return new DoVitalsGoal(
                 wpsStart.getPlanID(),
                 doVitalsRole,
                 "DoVitalsTask",
                 GoalBDITypes.SURVIVAL);
-        return doVitalsGoalBDI;
-    }
-
-    /**
-     *
-     * @param id
-     * @param role
-     * @param description
-     * @param type
-     */
-    public DoVitalsGoal(long id, RationalRole role, String description, GoalBDITypes type) {
-        super(id, role, description, type);
     }
 
     /**

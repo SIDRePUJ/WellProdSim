@@ -28,6 +28,14 @@ public class BankAgentState extends StateBESA implements Serializable {
     private double availableMoney;
     private Map<String, LoanTable> loans = new HashMap<>();
 
+    @Override
+    public String toString() {
+        return "BankAgentState{" +
+                "availableMoney=" + availableMoney +
+                ", loans=" + loans +
+                '}';
+    }
+
     /**
      *
      */

@@ -165,7 +165,7 @@ public class WorldGuard extends GuardBESA {
             ah.sendEvent(event);
             //wpsReport.debug("Sent: " + peasantMessage.getPayload());
         } catch (ExceptionBESA e) {
-            wpsReport.error(e.getMessage());
+            wpsReport.error(e.getMessage(), "WorldAgent.replyToPeasantAgent");
         }
     }
 
@@ -190,7 +190,7 @@ public class WorldGuard extends GuardBESA {
             //wpsReport.debug("Sent: " + peasantMessage.getSimpleMessage());
             ah.sendEvent(event);
         } catch (ExceptionBESA e) {
-            wpsReport.error(e.getMessage());
+            wpsReport.error(e.getMessage(), "WorldAgent.notifyPeasantCropProblem");
         }
     }
 
@@ -214,7 +214,7 @@ public class WorldGuard extends GuardBESA {
             //wpsReport.debug("Sent: " + peasantMessage.getSimpleMessage());
             ah.sendEvent(event);
         } catch (ExceptionBESA e) {
-            wpsReport.error(e.getMessage());
+            wpsReport.error(e.getMessage(), "WorldAgent.notifyPeasantCropReadyToHarvest");
         }
     }
 
@@ -232,7 +232,7 @@ public class WorldGuard extends GuardBESA {
                     periodicDataBESA);
             ah.sendEvent(eventPeriodic);
         } catch (ExceptionBESA e) {
-            wpsReport.error(e.getMessage());
+            wpsReport.error(e.getMessage(), "WorldAgent.harvestCrop");
         }
     }
 }

@@ -32,24 +32,28 @@ public class ControlAgentGuard extends GuardBESA {
 
     /**
      *
-     * @param event
+     * @param event Event rising the Guard
      */
     @Override
     public void funcExecGuard(EventBESA event) {
         String currentDate = "";
         ToControlMessage toControlMessage = (ToControlMessage) event.getData();
-        wpsReport.warn("Llegada al ControlAgent desde " + toControlMessage.getPeasantFamilyAlias() + " - " + toControlMessage.getDays());
+        String agentAlias = toControlMessage.getPeasantFamilyAlias();
+        ControlAgentState state = (ControlAgentState) this.getAgent().getState();
 
-        ((ControlAgentState) this.getAgent().getState()).increaseActiveAgents();
-        ((ControlAgentState) this.getAgent().getState()).modifyAgentMap(
-                toControlMessage.getPeasantFamilyAlias(),
-                true
-        );
+        if (state.getAgentMap().containsKey(agentAlias)) {
+            wpsReport.warn(agentAlias + " has already arrived.", "ControlAgentGuard");
+            return;
+        }
 
-        wpsReport.warn("Completados " + ((ControlAgentState) this.getAgent().getState()).getActiveAgentsCount());
+        wpsReport.warn(agentAlias + " Arrive - " + toControlMessage.getDays(), "ControlAgentGuard");
 
-        if (((ControlAgentState) this.getAgent().getState()).getActiveAgentsReady()) {
+        state.increaseActiveAgents();
+        state.modifyAgentMap(agentAlias, true);
 
+        wpsReport.warn(state.getActiveAgentsCount() + " Finished.", "ControlAgentGuard");
+
+        if (state.getActiveAgentsReady()) {
             try {
                 for (int i = 1; i <= wpsStart.peasantFamiliesAgents; i++) {
                     AdmBESA adm = AdmBESA.getInstance();
@@ -59,21 +63,21 @@ public class ControlAgentGuard extends GuardBESA {
                     //wpsReport.warn("Activando PeasantFamily_" + i);
                 }
             } catch (ExceptionBESA ex) {
-                wpsReport.error(ex);
+                wpsReport.error(ex, "ControlAgentGuard");
             }
 
-            ((ControlAgentState) this.getAgent().getState()).resetActiveAgents();
-            currentDate = ControlCurrentDate.getInstance().getDatePlusXDaysAndUpdate(wpsStart.DAYSTOCHECK);
+            state.resetActiveAgents();
+            currentDate = ControlCurrentDate.getInstance().getDatePlusXDaysAndUpdate(wpsStart.DAYS_TO_CHECK);
         }
 
         if (currentDate.contains("2023")) {
             try {
                 wpsStart.stopSimulation();
             } catch (ExceptionBESA ex) {
-                wpsReport.error(ex);
+                wpsReport.error(ex, "ControlAgentGuard");
             }
         }
-
     }
+
 
 }

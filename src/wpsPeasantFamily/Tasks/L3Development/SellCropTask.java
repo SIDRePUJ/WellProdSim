@@ -51,8 +51,8 @@ public class SellCropTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        wpsReport.info("⚙️⚙️⚙️", believes.getPeasantProfile().getPeasantFamilyAlias());
         // @TODO: Cambiar a la venta real con el agente social market
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
         
@@ -73,7 +73,7 @@ public class SellCropTask extends Task {
             ah.sendEvent(ev);
 
         } catch (ExceptionBESA ex) {
-            wpsReport.error(ex);
+            wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
         believes.setCurrentSeason(SeasonType.NONE);
         this.setFinished();

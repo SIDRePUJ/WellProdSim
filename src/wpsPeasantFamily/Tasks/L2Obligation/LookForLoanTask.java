@@ -45,7 +45,7 @@ public class LookForLoanTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        wpsReport.info("");
+        //wpsReport.info("");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.useTime(believes.getTimeLeftOnDay());
 
@@ -54,7 +54,7 @@ public class LookForLoanTask extends Task {
             AdmBESA adm = AdmBESA.getInstance();
             AgHandlerBESA ah = adm.getHandlerByAlias(wpsStart.config.getBankAgentName());
             
-            wpsReport.info("Pidiendo prestamo formal");
+            wpsReport.info("Pidiendo prestamo formal", believes.getPeasantProfile().getPeasantFamilyAlias());
             BankMessage bankMessage = new BankMessage(
                     ASK_FOR_FORMAL_LOAN,
                     believes.getPeasantProfile().getPeasantFamilyAlias(),
@@ -66,7 +66,7 @@ public class LookForLoanTask extends Task {
             ah.sendEvent(ev);
             
         } catch (ExceptionBESA ex) {
-            wpsReport.error(ex);
+            wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
         believes.setAskedForLoanToday();
         

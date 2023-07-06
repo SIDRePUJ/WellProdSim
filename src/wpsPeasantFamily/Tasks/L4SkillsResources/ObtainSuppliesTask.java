@@ -72,7 +72,7 @@ public class ObtainSuppliesTask extends Task {
             ah.sendEvent(ev);
 
         } catch (ExceptionBESA ex) {
-            wpsReport.error(ex);
+            wpsReport.error(ex, "ObtainSuppliesTask.executeTask");
         }
         //this.setTaskWaitingForExecution();
         this.setFinished();

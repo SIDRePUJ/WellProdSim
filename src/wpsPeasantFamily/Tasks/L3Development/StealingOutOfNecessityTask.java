@@ -38,10 +38,10 @@ public class StealingOutOfNecessityTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        wpsReport.info("⚙️⚙️⚙️", believes.getPeasantProfile().getPeasantFamilyAlias());
         believes.useTime(believes.getTimeLeftOnDay());
-        believes.increaseRoberyAccount();
+        believes.increaseRobberyAccount();
         if (Math.random() < 0.4) {
             believes.getPeasantProfile().increaseMoney(65000);
         } else {
@@ -84,7 +84,7 @@ public class StealingOutOfNecessityTask extends Task {
      */
     @Override
     public boolean checkFinish(Believes parameters) {
-        wpsReport.warn("today "+((PeasantFamilyBDIAgentBelieves) parameters).isRobbedToday());
+        //wpsReport.warn("today "+((PeasantFamilyBDIAgentBelieves) parameters).isRobbedToday());
         return ((PeasantFamilyBDIAgentBelieves) parameters).isRobbedToday();
     }
 }

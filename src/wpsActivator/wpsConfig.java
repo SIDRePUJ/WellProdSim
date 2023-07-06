@@ -49,7 +49,7 @@ public final class wpsConfig {
     private int peasantSerialID;
 
     private PeasantFamilyProfile stableFarmerProfile;
-    private PeasantFamilyProfile highriskFarmerProfile;
+    private PeasantFamilyProfile highRiskFarmerProfile;
     private PeasantFamilyProfile thrivingFarmerProfile;
 
     /**
@@ -106,8 +106,8 @@ public final class wpsConfig {
      *
      * @return
      */
-    public PeasantFamilyProfile getHighriskFarmerProfile() {
-        return highriskFarmerProfile.clone();
+    public PeasantFamilyProfile getHighRiskFarmerProfile() {
+        return highRiskFarmerProfile.clone();
     }
 
     /**
@@ -200,13 +200,13 @@ public final class wpsConfig {
             return priceList;
 
         } catch (IOException e) {
-            wpsReport.error(e.getMessage());
+            wpsReport.error(e.getMessage(), "wpsConfig.loadMarketConfig");
         } finally {
             if (fileInputStream != null) {
                 try {
                     fileInputStream.close();
                 } catch (IOException e) {
-                    wpsReport.error(e.getMessage());
+                    wpsReport.error(e.getMessage(), "wpsConfig.loadMarketConfig");
                 }
             }
         }
@@ -228,7 +228,7 @@ public final class wpsConfig {
             this.ViewerAgentName = properties.getProperty("viewer.name");
             fileInputStream.close();
         } catch (IOException e) {
-            wpsReport.error(e.getMessage());
+            wpsReport.error(e.getMessage(), "wpsConfig.loadWPSConfig");
         }
     }
 
@@ -245,21 +245,18 @@ public final class wpsConfig {
 
             yamlContent = FileLoader.readFile("wpsStablePeasant.yml");
             data = (Map<String, Object>) load.loadFromString(yamlContent);
-            wpsReport.info("Configuración RegularPeasant cargada con exito");
             Map<String, Object> regularPeasant = (Map<String, Object>) data.get("StablePeasant");
             jsonData = gson.toJson(regularPeasant);
             stableFarmerProfile = gson.fromJson(jsonData, PeasantFamilyProfile.class);
 
             yamlContent = FileLoader.readFile("wpsHighriskPeasant.yml");
             data = (Map<String, Object>) load.loadFromString(yamlContent);
-            wpsReport.info("Configuración LazyPeasant cargada con exito");
             Map<String, Object> lazyPeasant = (Map<String, Object>) data.get("HighriskPeasant");
             jsonData = gson.toJson(lazyPeasant);
-            highriskFarmerProfile = gson.fromJson(jsonData, PeasantFamilyProfile.class);
+            highRiskFarmerProfile = gson.fromJson(jsonData, PeasantFamilyProfile.class);
 
             yamlContent = FileLoader.readFile("wpsThrivingPeasant.yml");
             data = (Map<String, Object>) load.loadFromString(yamlContent);
-            wpsReport.info("Configuración ProactivePeasant cargada con exito");
             Map<String, Object> proactivePeasant = (Map<String, Object>) data.get("ThrivingPeasant");
             jsonData = gson.toJson(proactivePeasant);
             thrivingFarmerProfile = gson.fromJson(jsonData, PeasantFamilyProfile.class);
@@ -277,15 +274,16 @@ public final class wpsConfig {
 
     public PeasantFamilyProfile getFarmerProfile() {
 
-        PeasantFamilyProfile pfProfile = this.getHighriskFarmerProfile();
-        //.getThrivingFarmerProfile();
-        //.getStableFarmerProfile()
+        PeasantFamilyProfile pfProfile = this.getHighRiskFarmerProfile();
+        //getThrivingFarmerProfile();
+        //getStableFarmerProfile()
+        //getHighriskFarmerProfile
 
         double rnd = 1 + generateRandomNumber(
                 pfProfile.getVariance() * -1,
                 pfProfile.getVariance()
         );
-        wpsReport.debug(rnd + " numero");
+        wpsReport.debug(rnd + " random number", "wpsConfig.getFarmerProfile");
 
         pfProfile.setHealth((int) (pfProfile.getHealth() * rnd));
         pfProfile.setMoney((int) (pfProfile.getMoney() * rnd));

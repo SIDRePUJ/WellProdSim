@@ -14,6 +14,7 @@
  */
 package wpsPeasantFamily.Goals.L6Leisure;
 
+import wpsPeasantFamily.Data.PeasantActivityType;
 import wpsPeasantFamily.Tasks.L6Leisure.LeisureActivitiesTask;
 import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
@@ -84,10 +85,13 @@ public class LeisureActivitiesGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.getCurrentPeasantLeisureType() == PeasantLeisureType.LEISURE) {
+
+        //if (believes.getCurrentPeasantLeisureType() == PeasantLeisureType.LEISURE) {
+        if (believes.getCurrentActivity() != PeasantActivityType.PTW) {
             //wpsReport.debug("Detectó");
             return 1;
         } else {
+            //wpsReport.debug(believes.toJson());
             return 0;
         }
     }
@@ -118,7 +122,7 @@ public class LeisureActivitiesGoal extends GoalBDI {
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         //wpsReport.info("evaluateContribution " + stateBDI.getMachineBDIParams().getAttentionCycleThreshold());
-        return 1;
+        return 0.7;
     }
 
     /**
@@ -141,7 +145,7 @@ public class LeisureActivitiesGoal extends GoalBDI {
      */
     @Override
     public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
-        wpsReport.debug("goalSucceededgoalSucceeded");
+        //wpsReport.debug("goalSucceededgoalSucceeded");
         return true;
     }
 

@@ -163,7 +163,7 @@ public class CropLayer extends GenericWorldLayer {
         currentCell.setCellState(newDate, newCellState);
     }
 
-    // Equation extracted from https://www.fao.org/3/x0490e/x0490e0e.htm#total%20available%20water%20(taw) A numerical approximation for adjusting p for ETc rate is p = pTable 22 + 0.04 (5 - ETc) where the adjusted p is limited to 0.1 £ p £ 0.8 and ETc is in mm/day.
+    // Equation extracted from https://www.fao.org/3/x0490e/x0490e0e.htm#total%20available%20water%20(taw) A numerical approximation for adjusting p for ETc rate is p = pTable 22 + 0.04 (5 - ETc) where the adjusted p is limited to 0.1 £ p £ 0.8 and, ETc is in mm/day.
     private double calculateDepletionFractionAdjusted(double depletionFraction, double cropEvapotranspiration) {
         return depletionFraction + 0.04 * (5 - cropEvapotranspiration);
     }
@@ -266,7 +266,7 @@ public class CropLayer extends GenericWorldLayer {
                         .map(this::convertToCSV)
                         .forEach(pw::println);
             } catch (FileNotFoundException fileNotFoundException) {
-                wpsReport.error("File not Found!!!");
+                wpsReport.error("File not Found!!!", "CropLayer");
             }
         }
     }

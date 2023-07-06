@@ -63,7 +63,7 @@ public class FromMarketGuard extends GuardBESA {
                     //wpsReport.info("----- Vendido");
                     break;
                 case PRICE_LIST:
-                    wpsReport.debug(fromMarketMessage.getPriceList());
+                    //wpsReport.debug(fromMarketMessage.getPriceList());
                     believes.setPriceList(
                             fromMarketMessage.getPriceList()
                     );
@@ -109,7 +109,7 @@ public class FromMarketGuard extends GuardBESA {
             believes.getPeasantProfile().useMoney(discount);
             
         } catch (IllegalArgumentException e) {
-            wpsReport.error("Mensaje no reconocido de FromWorldMessageType");
+            wpsReport.error("Mensaje no reconocido de FromWorldMessageType", "FromMarketGuard");
         }
         
     }

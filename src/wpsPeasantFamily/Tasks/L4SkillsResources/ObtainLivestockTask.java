@@ -72,7 +72,7 @@ public class ObtainLivestockTask extends Task {
             ah.sendEvent(ev);
 
         } catch (ExceptionBESA ex) {
-            wpsReport.error(ex);
+            wpsReport.error(ex, "ObtainLivestockTask");
         }
         //this.setTaskWaitingForExecution();
         this.setFinished();

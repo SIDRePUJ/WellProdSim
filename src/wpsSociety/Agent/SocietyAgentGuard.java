@@ -30,7 +30,7 @@ public class SocietyAgentGuard extends GuardBESA  {
      */
     @Override
     public void funcExecGuard(EventBESA event) {
-        wpsReport.debug("Llegada al agente Sociedad desde " + event.getSource());
+        wpsReport.debug("Llegada al agente Sociedad desde " + event.getSource(), this.getAgent().getAlias());
     }
     
 }

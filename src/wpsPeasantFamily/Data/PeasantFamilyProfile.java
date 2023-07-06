@@ -1165,7 +1165,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      *
      */
     public synchronized void increaseFamilyTimeAvailability() {
-        wpsReport.info("");
+        //wpsReport.info("");
         /*if (this.familyTimeAvailability == 1) {
             this.familyTimeAvailability = 1;
         } else {
@@ -1282,7 +1282,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      *
      */
     public synchronized void increaseLeisureOptions() {
-        wpsReport.info("");
+        //wpsReport.info("");
         /*if (this.leisureOptions >= 1) {
             this.leisureOptions = 1;
         } else {
@@ -1478,8 +1478,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      */
     @Override
     public synchronized String toString() {
-        return ""
-                + " * Peasant Kind: " + peasantKind + "\n"
+        return " * Peasant Kind: " + peasantKind + "\n"
                 + " * Health: " + health + "\n"
                 + " * Land: " + land + "\n"
                 + " * Money: " + money + "\n"

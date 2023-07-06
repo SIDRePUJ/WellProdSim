@@ -55,7 +55,7 @@ public class FromWorldGuard extends GuardBESA {
                     break;
                 case NOTIFY_CROP_WATER_STRESS:
                     believes.setCurrentCropCare(CropCareType.IRRIGATION);
-                    wpsReport.info("🍙🍙🍙: NOTIFY_CROP_WATER_STRESS");
+                    wpsReport.info("🍙🍙🍙: NOTIFY_CROP_WATER_STRESS", this.getAgent().getAlias());
                     break;
                 case CROP_INFORMATION_NOTIFICATION:
                     //believes.getProfile().setPesticideSeason(true);
@@ -72,11 +72,11 @@ public class FromWorldGuard extends GuardBESA {
                     //believes.getProfile().setPlantingSeason(true);
                     break;
                 case CROP_HARVEST:
-                    //wpsReport.info("🍙🍙🍙: CROP_HARVEST OK");
+                    wpsReport.info("🍙🍙🍙: CROP_HARVEST OK", this.getAgent().getAlias());
                     JSONObject cropData = new JSONObject(
                             peasantCommMessage.getPayload()
                     );
-                    wpsReport.warn(cropData);
+                    wpsReport.warn(cropData, this.getAgent().getAlias());
                     believes.getPeasantProfile().setHarvestedWeight(
                             (int) Math.round(
                                     Double.parseDouble(
@@ -95,8 +95,7 @@ public class FromWorldGuard extends GuardBESA {
                     break;
             }
         } catch (IllegalArgumentException e) {
-            wpsReport.warn("error?" + e.getStackTrace());
-            wpsReport.error(e);
+            wpsReport.warn("error?" + e, this.getAgent().getAlias());
         }
 
     }

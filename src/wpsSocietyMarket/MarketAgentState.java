@@ -32,6 +32,13 @@ public class MarketAgentState extends StateBESA implements Serializable {
      */
     Map<String, FarmingResource> resources = new HashMap<>();
 
+    @Override
+    public String toString() {
+        return "MarketAgentState{" +
+                "resources=" + resources +
+                '}';
+    }
+
     /**
      *
      */

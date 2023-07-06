@@ -24,15 +24,25 @@ public class wpsViewerMessage extends DataBESA {
 
     private String peasantAlias;
     private String peasantMessage;
+    private String level;
 
     /**
      *
      * @param peasantAlias
      * @param peasantMessage
      */
-    public wpsViewerMessage(String peasantAlias, String peasantMessage) {
+    public wpsViewerMessage(String peasantMessage, String level, String peasantAlias) {
+        this.level = level;
         this.peasantAlias = peasantAlias;
         this.peasantMessage = peasantMessage;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 
     /**

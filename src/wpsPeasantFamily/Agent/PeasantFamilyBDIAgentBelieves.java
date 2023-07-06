@@ -129,7 +129,7 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
         return robberyAccount;
     }
 
-    public void increaseRoberyAccount() {
+    public void increaseRobberyAccount() {
         this.robberyAccount++;
     }
 
@@ -234,18 +234,19 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
      *
      * @param time
      */
-    public void decreaseTime(double time) {
+    public synchronized void decreaseTime(double time) {
         this.timeLeftOnDay = this.timeLeftOnDay - time;
         if (this.timeLeftOnDay <= 0) {
-            wpsReport.info("🌤️🌤️  NewDay para "
+            /*wpsReport.info("🌤️🌤️  NewDay para "
                     + this.peasantProfile.getPeasantFamilyAlias()
                     + " con "
                     + this.peasantProfile.getHealth()
                     + " de Salud."
-            );
+            );*/
+            wpsReport.debug(toJson(), this.getPeasantProfile().getPeasantFamilyAlias());
             this.makeNewDay();
         } else {
-            wpsReport.info("⏱️⏱️  "
+            /*wpsReport.info("⏱️⏱️  "
                     + this.peasantProfile.getPeasantFamilyAlias()
                     + " Le quedan "
                     + this.timeLeftOnDay
@@ -254,7 +255,12 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
                     + " con "
                     + this.peasantProfile.getHealth()
                     + " de Salud."
-            );
+            );*/
+        }
+        try {
+            Thread.sleep((long) (50 * time));
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -350,15 +356,9 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
         Random rand = new Random();
 
         switch (rand.nextInt(1)) {
-            case 0:
-                this.currentPeasantLeisureType = PeasantLeisureType.LEISURE;
-                break;
-            case 1:
-                this.currentPeasantLeisureType = PeasantLeisureType.WASTERESOURCE;
-                break;
-            case 2:
-                this.currentPeasantLeisureType = PeasantLeisureType.WASTERESOURCE;
-                break;
+            case 0 -> this.currentPeasantLeisureType = PeasantLeisureType.LEISURE;
+            case 1 -> this.currentPeasantLeisureType = PeasantLeisureType.WASTERESOURCE;
+            //case 2 -> this.currentPeasantLeisureType = PeasantLeisureType.WASTERESOURCE;
         }
     }
 
@@ -372,7 +372,7 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
 
     /**
      *
-     * @param currentSeason
+     * @param currentSeason the currentSeason to set
      */
     public void setCurrentSeason(SeasonType currentSeason) {
         this.currentSeason = currentSeason;
@@ -388,7 +388,7 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
 
     /**
      *
-     * @param currentCropCare
+     * @param currentCropCare the currentCropCare to set
      */
     public void setCurrentCropCare(CropCareType currentCropCare) {
         this.currentCropCare = currentCropCare;
@@ -404,7 +404,7 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
 
     /**
      *
-     * @param currentMoneyOrigin
+     * @param currentMoneyOrigin the currentMoneyOrigin to set
      */
     public void setCurrentMoneyOrigin(MoneyOriginType currentMoneyOrigin) {
         this.currentMoneyOrigin = currentMoneyOrigin;
@@ -420,7 +420,7 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
 
     /**
      *
-     * @return
+     * @return the currentPeasantActivityType
      */
     public EmotionalState getPeasantEmotionalState() {
         return peasantEmotionalState;
@@ -428,7 +428,7 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
 
     /**
      *
-     * @return
+     * @return the currentPeasantActivityType
      */
     public PeasantFamilyProfile getPeasantProfile() {
         return peasantProfile;
@@ -436,7 +436,7 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
 
     /**
      *
-     * @param peasantProfile
+     * @param peasantProfile the peasantProfile to set
      */
     private void setPeasantProfile(PeasantFamilyProfile peasantProfile) {
         this.peasantProfile = peasantProfile;
@@ -454,7 +454,7 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
 
     /**
      *
-     * @param priceList
+     * @param priceList the priceList to set
      */
     public void setPriceList(Map<String, FarmingResource> priceList) {
         this.priceList = priceList;
@@ -462,7 +462,7 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
 
     /**
      *
-     * @return
+     * @return the priceList
      */
     public Map<String, FarmingResource> getPriceList() {
         return priceList;
@@ -509,15 +509,15 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
         return "PeasantFamilyBDIAgentBelieves{" + "peasantProfile=" + peasantProfile.getPeasantFamilyAlias()
                 + ",peasantEmotionalState=" + peasantEmotionalState + ",currentSeason="
                 + currentSeason + ",currentCropCare=" + currentCropCare
-                + ",roberyAccount=" + robberyAccount + ",ptwDate=" + ptwDate
+                + ",robberyAccount=" + robberyAccount + ",ptwDate=" + ptwDate
                 + ",currentMoneyOrigin=" + currentMoneyOrigin + ",currentPeasantActivityType="
                 + currentPeasantActivityType + ", currentPeasantLeisureType=" + currentPeasantLeisureType
                 + ",currentResourceNeededType=" + currentResourceNeededType + ",currentDay="
                 + currentDay + ",timeLeftOnDay=" + timeLeftOnDay
                 + ",newDay=" + newDay + ",weekBlock="
                 + weekBlock + ",busy=" + busy + ",askedForLoanToday=" + askedForLoanToday
-                + ",robbedToday=" + robbedToday
-                + ", internalCurrentDate=" + internalCurrentDate //+ ", priceList=" + priceList
+                + ",robbedToday=" + robbedToday + ",checkedToday=" + checkedToday
+                + ",internalCurrentDate=" + internalCurrentDate
                 + peasantProfile.toJson();
     }
 
@@ -533,7 +533,7 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
                 + " * CurrentMoneyOrigin: " + currentMoneyOrigin + "\n"
                 + " * PeasantActivityType: " + currentPeasantActivityType + "\n"
                 + " * currentPeasantLeisureType: " + currentPeasantLeisureType + "\n"
-                + " * roberyAccount: " + robberyAccount + "\n"
+                + " * robberyAccount: " + robberyAccount + "\n"
                 + " * ptwDate: " + ptwDate + "\n"
                 + " * CurrentDay: " + currentDay + "\n"
                 + " * TimeLeftOnDay: " + timeLeftOnDay + "\n"

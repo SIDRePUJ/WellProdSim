@@ -77,7 +77,7 @@ public class ObtainToolsTask extends Task {
             ah.sendEvent(ev);
 
         } catch (ExceptionBESA ex) {
-            wpsReport.error(ex);
+            wpsReport.error(ex, "obtainToolsTask.executeTask");
         }
         //this.setTaskWaitingForExecution();
         believes.setCurrentResourceNeededType(ResourceNeededType.NONE);

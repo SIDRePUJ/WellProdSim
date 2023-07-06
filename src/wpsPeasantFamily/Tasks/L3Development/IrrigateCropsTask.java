@@ -34,13 +34,10 @@ import static wpsWorld.Messages.WorldMessageType.CROP_IRRIGATION;
  */
 public class IrrigateCropsTask extends Task {
 
-    private boolean finished;
-
     /**
      *
      */
     public IrrigateCropsTask() {
-        this.finished = false;
     }
 
     /**
@@ -75,9 +72,9 @@ public class IrrigateCropsTask extends Task {
             believes.setCurrentCropCare(CropCareType.NONE);
 
         } catch (ExceptionBESA ex) {
-            wpsReport.error(ex);
+            wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
-        wpsReport.info("🚰🚰🚰🚰 Irrigación de cultivos con " + waterUsed);
+        wpsReport.info("🚰🚰🚰🚰 Irrigación de cultivos con " + waterUsed, believes.getPeasantProfile().getPeasantFamilyAlias());
         //this.setTaskFinalized();
 
     }

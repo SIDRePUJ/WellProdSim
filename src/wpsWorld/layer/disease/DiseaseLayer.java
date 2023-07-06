@@ -132,11 +132,11 @@ public class DiseaseLayer extends GenericWorldLayerGraphCell<DiseaseCell> {
                 DiseaseCellState newCellState = new DiseaseCellState();
                 if (this.worldConfig.isDiseasePerturbation()) {
                     double nextRand = this.random.nextDouble();
-                    wpsReport.info("Current rand for disease " + nextRand);
+                    wpsReport.info("Current rand for disease " + nextRand, "DiseaseLayer");
                     this.updateCellInsecticideFromCellEvents(currentCell);
                     if (currentCell.getDateInsecticideApplication() == null || DateHelper.differenceDaysBetweenTwoDates(dateExecution, currentCell.getDateInsecticideApplication()) > insecticideDaysEffectiveness) {
                         newCellState.setCurrentProbabilityDisease(currentCellState.getCurrentProbabilityDisease() + probabilityDiseaseConfigured);
-                        // Evaluates if should get infected if the random is less or equal of the current accumulated probability of generating a disease plus the quantity of neighbors infected multiplied the configured factor
+                        // Evaluates if it should get infected if the random is less or equal of the current accumulated probability of generating a disease plus the quantity of neighbors infected multiplied the configured factor
                         newCellState.setInfected(((DiseaseCellState) currentCell.getCellState()).isInfected() || nextRand <= currentCellState.getCurrentProbabilityDisease() + quantityNeighborsInfected * incrementNeighborInfected);
                     } else {
                         double insecticideCoverage = currentCell.getPercentageOfCropCoverage();
@@ -167,10 +167,10 @@ public class DiseaseLayer extends GenericWorldLayerGraphCell<DiseaseCell> {
     private void printCellsStates() {
         for (DiseaseCell currentCell : this.allCells) {
             if (((DiseaseCellState) currentCell.getCellState()).isInfected()) {
-                wpsReport.info("Cell: " + currentCell.getId());
-                wpsReport.info("infected: " + ((DiseaseCellState) currentCell.getCellState()).isInfected());
-                wpsReport.info("current probability of infection: " + ((DiseaseCellState) currentCell.getCellState()).getCurrentProbabilityDisease());
-                wpsReport.info("-------------------");
+                wpsReport.info("Cell: " + currentCell.getId(), "DiseaseLayer");
+                wpsReport.info("infected: " + ((DiseaseCellState) currentCell.getCellState()).isInfected(), "DiseaseLayer");
+                wpsReport.info("current probability of infection: " + ((DiseaseCellState) currentCell.getCellState()).getCurrentProbabilityDisease(), "DiseaseLayer");
+                wpsReport.info("-------------------", "DiseaseLayer");
             }
         }
     }
@@ -179,7 +179,7 @@ public class DiseaseLayer extends GenericWorldLayerGraphCell<DiseaseCell> {
      * Adds a disease action in this case insecticide, will affect the
      * calculation during the layer execution
      *
-     * @param diseaseCellId Id of the cell
+     * @param diseaseCellId ID of the cell
      * @param groundCoverage percentage of coverage of the crop
      * @param date date of application
      */

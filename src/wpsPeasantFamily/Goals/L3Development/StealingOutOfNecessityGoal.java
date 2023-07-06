@@ -77,7 +77,7 @@ public class StealingOutOfNecessityGoal extends GoalBDI {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         if (believes.haveTimeAvailable(TimeConsumedBy.StealingOutOfNecessityTask)
                 && believes.isHaveLoan()) {
-            wpsReport.warn("evaluatePlausibility");
+            //wpsReport.warn("evaluatePlausibility");
             return 1;
         } else {
             return 0;
@@ -94,7 +94,7 @@ public class StealingOutOfNecessityGoal extends GoalBDI {
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         if (believes.getPeasantProfile().getMoney() <= 15000) {
-            wpsReport.warn(believes.toJson());
+            //wpsReport.warn(believes.toJson());
             return 1;
         } else {
             return 0;

@@ -58,10 +58,10 @@ public class BankAgentGuard extends GuardBESA {
                             bankMessage.getPeasantAlias(),
                             bankMessage.getAmount()
                     )) {
-                        wpsReport.info("$$$ APPROBED Bank to " + bankMessage.getPeasantAlias());
+                        wpsReport.info("$$$ APPROBED Bank to " + bankMessage.getPeasantAlias(), this.getAgent().getAlias());
                         fromBankMessageType = APPROBED_LOAN;
                     } else {
-                        wpsReport.info("$$$ DENIED Bank to " + bankMessage.getPeasantAlias());
+                        wpsReport.info("$$$ DENIED Bank to " + bankMessage.getPeasantAlias(), this.getAgent().getAlias());
                         fromBankMessageType = DENIED_FORMAL_LOAN;
                     }
                     amount = bankMessage.getAmount();
@@ -72,10 +72,10 @@ public class BankAgentGuard extends GuardBESA {
                             bankMessage.getPeasantAlias(),
                             bankMessage.getAmount()
                     )) {
-                        wpsReport.info("$$$ APPROBED Bank to " + bankMessage.getPeasantAlias());
+                        wpsReport.info("$$$ APPROBED Bank to " + bankMessage.getPeasantAlias(), this.getAgent().getAlias());
                         fromBankMessageType = APPROBED_INFORMAL_LOAN;
                     } else {
-                        wpsReport.info("$$$ DENIED Bank to " + bankMessage.getPeasantAlias());
+                        wpsReport.info("$$$ DENIED Bank to " + bankMessage.getPeasantAlias(), this.getAgent().getAlias());
                         fromBankMessageType = DENIED_INFORMAL_LOAN;
                     }
                     amount = bankMessage.getAmount();
@@ -92,22 +92,24 @@ public class BankAgentGuard extends GuardBESA {
                             bankMessage.getAmount()
                     );
                     fromBankMessageType = TERM_PAYED;
-                    wpsReport.info(bankMessage.getPeasantAlias() + " Pagó " + amount + " - " + bankMessage.getMessageType());
+                    wpsReport.info(bankMessage.getPeasantAlias() + " Pagó " + amount + " - " + bankMessage.getMessageType(), this.getAgent().getAlias());
                     break;
             }
 
             FromBankMessage fromBankMessage = new FromBankMessage(
                     fromBankMessageType,
                     amount);
-            wpsReport.info("Llegó " + bankMessage.getPeasantAlias() + " " + bankMessage.getMessageType());
-            wpsReport.info("Enviado " + fromBankMessage.getMessageType());
+            wpsReport.info("Llegó " + bankMessage.getPeasantAlias() + " " + bankMessage.getMessageType(), this.getAgent().getAlias());
+            wpsReport.info("Enviado " + fromBankMessage.getMessageType(), this.getAgent().getAlias());
             EventBESA ev = new EventBESA(
                     FromBankGuard.class.getName(),
                     fromBankMessage);
             ah.sendEvent(ev);
 
+            wpsReport.info(state.toString(), this.getAgent().getAlias());
+
         } catch (ExceptionBESA | IllegalArgumentException e) {
-            wpsReport.error("Mensaje no reconocido de funcExecGuard");
+            wpsReport.error("Mensaje no reconocido de funcExecGuard", this.getAgent().getAlias());
         }
 
     }

@@ -73,7 +73,7 @@ public class ObtainPesticidesTask extends Task {
             ah.sendEvent(ev);
 
         } catch (ExceptionBESA ex) {
-            wpsReport.error(ex);
+            wpsReport.error(ex, "ObtainPesticidesTask.executeTask( )");
         }
         this.setFinished();
         believes.setCurrentResourceNeededType(ResourceNeededType.NONE);

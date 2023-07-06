@@ -33,14 +33,12 @@ import wpsViewer.Agent.wpsReport;
  */
 public class PayDebtsTask extends Task {
 
-    private boolean finished;
 
     /**
      *
      */
     public PayDebtsTask() {
         ////wpsReport.info("");
-        this.finished = false;
     }
 
     /**
@@ -49,9 +47,9 @@ public class PayDebtsTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        wpsReport.info("⚙️⚙️⚙️ Pagando");
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
 
+        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        wpsReport.info("⚙️⚙️⚙️ Paying ", believes.getPeasantProfile().getPeasantFamilyAlias());
         try {
             AdmBESA adm = AdmBESA.getInstance();
             AgHandlerBESA ah = adm.getHandlerByAlias(wpsStart.config.getBankAgentName());
@@ -72,7 +70,7 @@ public class PayDebtsTask extends Task {
             believes.getPeasantProfile().setLoanAmountToPay(0);
 
         } catch (ExceptionBESA ex) {
-            wpsReport.error(ex);
+            wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
         
     }

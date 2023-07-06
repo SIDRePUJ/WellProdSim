@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -31,7 +31,9 @@ import wpsPeasantFamily.Data.SeasonType;
 import wpsPeasantFamily.Data.TimeConsumedBy;
 import wpsSocietyBank.Agent.BankAgentGuard;
 import wpsSocietyBank.Agent.BankMessage;
+
 import static wpsSocietyBank.Agent.BankMessageType.ASK_CURRENT_TERM;
+
 import wpsViewer.Agent.wpsReport;
 
 /**
@@ -57,41 +59,40 @@ public class DoVitalsTask extends Task {
         believes.setNewDay(false);
 
         // Peasant Family pass the way
-        if (believes.getPeasantProfile().getHealth() <= 0) {
-            //wpsReport.fatal("Pass the Way");
-            believes.useTime(believes.getTimeLeftOnDay());
-            believes.setCurrentActivity(PeasantActivityType.PTW);
-            believes.setPtwDate(believes.getInternalCurrentDate());
+        //if (believes.getPeasantProfile().getHealth() <= 0) {
+        //wpsReport.fatal("Pass the Way");
+        //    believes.useTime(believes.getTimeLeftOnDay());
+        //    believes.setCurrentActivity(PeasantActivityType.PTW);
+        //    believes.setPtwDate(believes.getInternalCurrentDate());
+        //} else {
+        // Starving peasant
+        if (believes.getPeasantProfile().getMoney()
+                < believes.getPeasantProfile().getPeasantFamilyMinimalVital()) {
+            believes.getPeasantProfile().decreaseHealth();
         } else {
-            // Starving peasant
-            if (believes.getPeasantProfile().getMoney()
-                    < believes.getPeasantProfile().getPeasantFamilyMinimalVital()) {
-                believes.getPeasantProfile().decreaseHealth();
-            } else {
-                // increase health after rest
-                believes.getPeasantProfile().increaseHealth();
-                // Vitals about money and food
-                believes.getPeasantProfile().discountDailyMoney();
-            }
-            // Check crop season
-            if (DateHelper.differenceDaysBetweenTwoDates(
-                    believes.getInternalCurrentDate(),
-                    believes.getPeasantProfile().getStartRiceSeason()) == 0) {
-                believes.setCurrentSeason(SeasonType.PREPARATION);
-            }
-
-            // En que gasta el tiempo el día
-            believes.setRandomCurrentPeasantLeisureType();
-            // Use time
-            believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
-            // Check debts
-            checkBankDebt(believes);
-            // Check Sync
-            checkWeek(believes);
-
-            //wpsReport.debug(believes.toJson());
+            // increase health after rest
+            believes.getPeasantProfile().increaseHealth();
+            // Vitals about money and food
+            believes.getPeasantProfile().discountDailyMoney();
         }
-        //this.setTaskFinalized();
+        // Check crop season
+        if (DateHelper.differenceDaysBetweenTwoDates(
+                believes.getInternalCurrentDate(),
+                believes.getPeasantProfile().getStartRiceSeason()) == 0) {
+            believes.setCurrentSeason(SeasonType.PREPARATION);
+        }
+
+        // En que gasta el tiempo el día
+        believes.setRandomCurrentPeasantLeisureType();
+        // Use time
+        believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
+        // Check debts
+        checkBankDebt(believes);
+        // Check Sync
+        checkWeek(believes);
+
+        //}
+        this.setTaskFinalized();
 
     }
 
@@ -127,24 +128,8 @@ public class DoVitalsTask extends Task {
     }
 
     private void checkWeek(PeasantFamilyBDIAgentBelieves believes) {
-        if (believes.getCurrentDay() % wpsStart.DAYSTOCHECK == 0) {
-            try {
-                believes.setWeekBlock();
-                //wpsReport.warn(believes.getWeekBlock());
-                AdmBESA adm = AdmBESA.getInstance();
-                ToControlMessage toControlMessage = new ToControlMessage(
-                        believes.getPeasantProfile().getPeasantFamilyAlias(),
-                        believes.getCurrentDay()
-                );
-                EventBESA eventBesa = new EventBESA(
-                        ControlAgentGuard.class.getName(),
-                        toControlMessage
-                );
-                AgHandlerBESA agHandler = adm.getHandlerByAlias(wpsStart.config.getControlAgentName());
-                agHandler.sendEvent(eventBesa);
-            } catch (ExceptionBESA ex) {
-                wpsReport.error(ex);
-            }
+        if (believes.getCurrentDay() % wpsStart.DAYS_TO_CHECK == 0) {
+            believes.setWeekBlock();
         }
     }
 
@@ -167,7 +152,7 @@ public class DoVitalsTask extends Task {
                 ah.sendEvent(ev);
 
             } catch (ExceptionBESA ex) {
-                wpsReport.error(ex);
+                wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
             }
         }
     }

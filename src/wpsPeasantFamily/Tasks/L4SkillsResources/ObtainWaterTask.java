@@ -47,8 +47,9 @@ public class ObtainWaterTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        wpsReport.info("🚰🚰🚰 Comprando Agua");
+
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        wpsReport.info("🚰🚰🚰 Comprando Agua", believes.getPeasantProfile().getPeasantFamilyAlias());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
 
         try {
@@ -67,7 +68,7 @@ public class ObtainWaterTask extends Task {
             ah.sendEvent(ev);
 
         } catch (ExceptionBESA ex) {
-            wpsReport.error(ex);
+            wpsReport.error(ex, "obtainWaterTask");
         }
         believes.setCurrentResourceNeededType(ResourceNeededType.NONE);
 

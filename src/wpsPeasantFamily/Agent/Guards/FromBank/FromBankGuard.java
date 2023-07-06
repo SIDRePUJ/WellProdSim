@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -17,9 +17,11 @@ package wpsPeasantFamily.Agent.Guards.FromBank;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
+
 import static wpsPeasantFamily.Agent.Guards.FromBank.FromBankMessageType.APPROBED_LOAN;
 import static wpsPeasantFamily.Agent.Guards.FromBank.FromBankMessageType.DENIED_FORMAL_LOAN;
 import static wpsPeasantFamily.Agent.Guards.FromBank.FromBankMessageType.TERM_TO_PAY;
+
 import wpsPeasantFamily.Agent.PeasantFamilyBDIAgentBelieves;
 import wpsPeasantFamily.Data.MoneyOriginType;
 import wpsViewer.Agent.wpsReport;
@@ -46,7 +48,12 @@ public class FromBankGuard extends GuardBESA {
 
             switch (fromBankMessageType) {
                 case APPROBED_LOAN:
-                    wpsReport.info(believes.getPeasantProfile().getPeasantFamilyAlias() + " incrementó el dinero con prestamo en: " + fromBankMessage.getAmount());
+                    wpsReport.info(
+                            believes.getPeasantProfile().getPeasantFamilyAlias()
+                                    + " incrementó el dinero con prestamo en: "
+                                    + fromBankMessage.getAmount(),
+                            this.getAgent().getAlias()
+                    );
                     believes.getPeasantProfile().increaseMoney(
                             fromBankMessage.getAmount()
                     );
@@ -54,7 +61,10 @@ public class FromBankGuard extends GuardBESA {
                     believes.setCurrentMoneyOrigin(MoneyOriginType.LOAN);
                     break;
                 case APPROBED_SOCIAL:
-                    wpsReport.info(believes.getPeasantProfile().getPeasantFamilyAlias() + " incrementó el dinero en de social para: " + fromBankMessage.getAmount());
+                    wpsReport.info(
+                            believes.getPeasantProfile().getPeasantFamilyAlias() + " incrementó el dinero en de social para: " + fromBankMessage.getAmount(),
+                            this.getAgent().getAlias()
+                    );
                     believes.getPeasantProfile().increaseMoney(
                             fromBankMessage.getAmount()
                     );
@@ -62,18 +72,18 @@ public class FromBankGuard extends GuardBESA {
                     break;
                 case DENIED_FORMAL_LOAN:
                     // @TODO: Pedir prestado en otro lado? cancelar?
-                    wpsReport.info("Denegado DENIED_FORMAL_LOAN");
+                    wpsReport.info("Denegado DENIED_FORMAL_LOAN", this.getAgent().getAlias());
                     believes.setCurrentMoneyOrigin(MoneyOriginType.LOAN_DENIED);
                     break;
                 case DENIED_INFORMAL_LOAN:
                     // @TODO: Pedir prestado en otro lado? cancelar?
                     //if (Math.random() < 0.2) {
                     //believes.setCurrentMoneyOrigin(MoneyOriginType.BENEFICENCIA);
-                    wpsReport.info("Denegado DENIED_INFORMAL_LOAN");
+                    wpsReport.info("Denegado DENIED_INFORMAL_LOAN", this.getAgent().getAlias());
                     believes.setCurrentMoneyOrigin(MoneyOriginType.INFORMAL_DENIED);
                     break;
                 case TERM_TO_PAY:
-                    wpsReport.info("Llegó la cuota a pagar por " + fromBankMessage.getAmount());
+                    wpsReport.info("Llegó la cuota a pagar por " + fromBankMessage.getAmount(), this.getAgent().getAlias());
                     believes.getPeasantProfile().setLoanAmountToPay(
                             fromBankMessage.getAmount()
                     );
@@ -84,7 +94,7 @@ public class FromBankGuard extends GuardBESA {
                     break;
             }
         } catch (IllegalArgumentException e) {
-            wpsReport.error("Mensaje no reconocido de FromWorldMessageType");
+            wpsReport.error("Mensaje no reconocido de FromWorldMessageType", this.getAgent().getAlias());
         }
 
     }

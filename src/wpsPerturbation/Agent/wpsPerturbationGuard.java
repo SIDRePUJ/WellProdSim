@@ -30,7 +30,7 @@ public class wpsPerturbationGuard extends GuardBESA  {
      */
     @Override
     public void funcExecGuard(EventBESA event) {
-        wpsReport.debug("Contacto con perturbación desde  " + event.getSource());
+        wpsReport.debug("Contacto con perturbación desde  " + event.getSource(), this.getAgent().getAlias());
     }
     
 }

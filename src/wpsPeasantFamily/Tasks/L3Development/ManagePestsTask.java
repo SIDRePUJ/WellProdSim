@@ -78,7 +78,7 @@ public class ManagePestsTask extends Task {
             //this.setTaskWaitingForExecution();
 
         } catch (ExceptionBESA ex) {
-            wpsReport.error(ex);
+            wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
         this.setFinished();
     }

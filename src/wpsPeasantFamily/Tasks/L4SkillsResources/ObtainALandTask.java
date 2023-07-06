@@ -94,10 +94,10 @@ public class ObtainALandTask extends Task {
             worldAgent.start();
 
         } catch (Exception ex) {
-            wpsReport.error(ex);
+            wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
 
-        wpsReport.info("🥬 " + believes.getPeasantProfile().getPeasantFamilyAlias() + " ya tiene tierra " + believes.getPeasantProfile().getPeasantFamilyLandAlias());
+        wpsReport.info("🥬 " + believes.getPeasantProfile().getPeasantFamilyAlias() + " ya tiene tierra " + believes.getPeasantProfile().getPeasantFamilyLandAlias(), believes.getPeasantProfile().getPeasantFamilyAlias());
         this.setTaskFinalized();
 
     }
@@ -174,7 +174,7 @@ public class ObtainALandTask extends Task {
             EventBESA eventBesa = new EventBESA(WorldGuard.class.getName(), worldMessage);
             ah.sendEvent(eventBesa);
         } catch (ExceptionBESA e) {
-            wpsReport.error(e);
+            wpsReport.error(e, "ObtainALandTask");
         }
     }
 
@@ -184,7 +184,7 @@ public class ObtainALandTask extends Task {
             String aliasWorldAgent,
             int cropSize,
             String cropName) {
-        wpsReport.warn(agentAlias + " " + aliasWorldAgent);
+        wpsReport.warn(agentAlias + " " + aliasWorldAgent, "ObtainALandTask");
         WorldState worldState = buildWorldState(rainfallFile, agentAlias, cropSize, cropName);
         StructBESA structBESA = new StructBESA();
         structBESA.bindGuard(WorldGuard.class);
@@ -192,7 +192,7 @@ public class ObtainALandTask extends Task {
             WorldAgent worldAgent = new WorldAgent(aliasWorldAgent, worldState, structBESA);
             return worldAgent;
         } catch (ExceptionBESA ex) {
-            wpsReport.error(ex);
+            wpsReport.error(ex, "ObtainALandTask");
         }
         return null;
     }

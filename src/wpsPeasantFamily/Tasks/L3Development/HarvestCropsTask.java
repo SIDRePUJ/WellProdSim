@@ -70,10 +70,10 @@ public class HarvestCropsTask extends Task {
                     WorldGuard.class.getName(),
                     worldMessage);
             ah.sendEvent(ev);
-            wpsReport.debug("enviando mensaje de corte");
+            wpsReport.debug("enviando mensaje de corte", believes.getPeasantProfile().getPeasantFamilyAlias());
 
         } catch (ExceptionBESA ex) {
-            wpsReport.error(ex);
+            wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }        
         this.setFinished();
         this.setTaskFinalized();
