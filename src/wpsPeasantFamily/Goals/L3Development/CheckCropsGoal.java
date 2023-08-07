@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -43,12 +43,11 @@ public class CheckCropsGoal extends GoalBDI {
         RationalRole checkCropsRole = new RationalRole(
                 "CheckCropsTask",
                 checkCropsPlan);
-        CheckCropsGoal checkCropsGoal = new CheckCropsGoal(
+        return new CheckCropsGoal(
                 wpsStart.getPlanID(),
                 checkCropsRole,
                 "CheckCropsTask",
                 GoalBDITypes.OPORTUNITY);
-        return checkCropsGoal;
     }
 
     /**
@@ -70,28 +69,12 @@ public class CheckCropsGoal extends GoalBDI {
      * @throws KernellAgentEventExceptionBESA
      */
     @Override
-    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.getPeasantProfile().getLand()) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.isCheckedToday()) {
-            return 0;
-        } else {
+        if (!believes.isCheckedToday() && believes.getPeasantProfile().getLand()) {
             return 1;
+        } else {
+            return 0;
         }
     }
 
@@ -109,6 +92,17 @@ public class CheckCropsGoal extends GoalBDI {
         } else {
             return 0;
         }
+    }
+
+    /**
+     *
+     * @param parameters
+     * @return
+     * @throws KernellAgentEventExceptionBESA
+     */
+    @Override
+    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
+        return 1;
     }
 
     /**

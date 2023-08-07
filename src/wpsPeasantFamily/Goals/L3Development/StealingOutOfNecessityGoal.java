@@ -125,7 +125,7 @@ public class StealingOutOfNecessityGoal extends GoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return 1;
+        return 0.8;
     }
 
     /**

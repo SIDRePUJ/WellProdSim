@@ -72,28 +72,24 @@ public class LeisureActivitiesGoal extends GoalBDI {
      * @throws KernellAgentEventExceptionBESA
      */
     @Override
-    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        return 1;
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
 
+        if (believes.getPeasantProfile().getHealth() > 0){
+            return 1;
+        }else {
+            return 0;
+        }
+
         //if (believes.getCurrentPeasantLeisureType() == PeasantLeisureType.LEISURE) {
-        if (believes.getCurrentActivity() != PeasantActivityType.PTW) {
+        /*if (believes.getCurrentActivity() == PeasantActivityType.LEISURE) {
             //wpsReport.debug("Detectó");
+            wpsReport.debug("detectGoal " + believes.getTimeLeftOnDay(), believes.getPeasantProfile().getPeasantFamilyAlias());
             return 1;
         } else {
             //wpsReport.debug(believes.toJson());
             return 0;
-        }
+        }*/
     }
 
     /**
@@ -106,11 +102,21 @@ public class LeisureActivitiesGoal extends GoalBDI {
     public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         if (believes.haveTimeAvailable(TimeConsumedBy.LeisureActivitiesTask)) {
-            //wpsReport.warn("SI ES POSIBLE");
             return 1;
         } else {
             return 0;
         }
+    }
+
+    /**
+     *
+     * @param parameters
+     * @return
+     * @throws KernellAgentEventExceptionBESA
+     */
+    @Override
+    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
+        return 1;
     }
 
     /**

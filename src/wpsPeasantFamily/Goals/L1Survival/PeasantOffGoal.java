@@ -23,6 +23,7 @@ import rational.mapping.Believes;
 import rational.mapping.Plan;
 import wpsPeasantFamily.Agent.PeasantFamilyBDIAgentBelieves;
 import wpsActivator.wpsStart;
+import wpsPeasantFamily.Data.PeasantActivityType;
 import wpsPeasantFamily.Tasks.L1Survival.PeasantOffTask;
 import wpsViewer.Agent.wpsReport;
 
@@ -43,12 +44,11 @@ public class PeasantOffGoal extends GoalBDI {
         RationalRole peasantOffRole = new RationalRole(
                 "peasantOffTask",
                 peasantOffPlan);
-        PeasantOffGoal peasantOffGoal = new PeasantOffGoal(
+        return new PeasantOffGoal(
                 wpsStart.getPlanID(),
                 peasantOffRole,
                 "peasantOffTask",
                 GoalBDITypes.SURVIVAL);
-        return peasantOffGoal;
     }
 
     /**
@@ -82,13 +82,11 @@ public class PeasantOffGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.getPeasantProfile().getHealth() <= 0) {
-            //wpsReport.debug("Detectó agente Off");
-            return 1;
-        } else {
+        if (believes.getPtwDate().isEmpty()) {
             return 0;
-            
-            
+        } else {
+            wpsReport.debug("Detectó agente Off", believes.getPeasantProfile().getPeasantFamilyAlias());
+            return 1;
         }
     }
 

@@ -43,12 +43,11 @@ public class MaintainHouseGoal extends GoalBDI {
         RationalRole maintainHouseRole = new RationalRole(
                 "MaintainHouseTask",
                 maintainHousePlan);
-        MaintainHouseGoal maintainHouseGoalBDI = new MaintainHouseGoal(
+        return new MaintainHouseGoal(
                 wpsStart.getPlanID(),
                 maintainHouseRole,
                 "MaintainHouseTask",
                 GoalBDITypes.OPORTUNITY);
-        return maintainHouseGoalBDI;
     }
 
     /**
@@ -61,24 +60,6 @@ public class MaintainHouseGoal extends GoalBDI {
     public MaintainHouseGoal(long id, RationalRole role, String description, GoalBDITypes type) {
         super(id, role, description, type);
         //wpsReport.info("");
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        //wpsReport.info("getTools=" + believes.getProfile().getTools());
-        if (believes.getPeasantProfile().getTools() > 0) {
-            return 1;
-        } else {
-            return 0;
-        }
     }
 
     /**
@@ -119,6 +100,24 @@ public class MaintainHouseGoal extends GoalBDI {
 
     /**
      *
+     * @param parameters
+     * @return
+     * @throws KernellAgentEventExceptionBESA
+     */
+    @Override
+    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
+        //wpsReport.info("");
+        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        //wpsReport.info("getTools=" + believes.getProfile().getTools());
+        if (believes.getPeasantProfile().getTools() > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     *
      * @param stateBDI
      * @return
      * @throws KernellAgentEventExceptionBESA
@@ -126,7 +125,7 @@ public class MaintainHouseGoal extends GoalBDI {
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         //wpsReport.info("");
-        return 1;
+        return 0.6;
     }
 
     /**

@@ -48,18 +48,23 @@ public class PeasantOffTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        
-        believes.setCurrentActivity(PeasantActivityType.PTW);
-        believes.setCurrentPeasantLeisureType(PeasantLeisureType.NONE);
-        believes.setCurrentCropCare(CropCareType.NONE);    
+
         believes.setNewDay(false);
         believes.useTime(believes.getTimeLeftOnDay());
-        
-        if (believes.getCurrentDay() % wpsStart.DAYS_TO_CHECK == 0) {
-            believes.setWeekBlock();
-        }
+
+        wpsReport.debug("PeasantOffTask "
+                        + " Family: " + believes.getPeasantProfile().getPeasantFamilyAlias()
+                        + " Health: " + believes.getPeasantProfile().getHealth()
+                        + " PTW: " + believes.getPtwDate()
+                        + " CurrentDate: " + believes.getInternalCurrentDate(),
+                believes.getPeasantProfile().getPeasantFamilyAlias()
+        );
+
+        believes.setCurrentActivity(PeasantActivityType.PTW);
+        believes.setCurrentPeasantLeisureType(PeasantLeisureType.NONE);
+        believes.setCurrentCropCare(CropCareType.NONE);
+
         this.setTaskFinalized();
     }
 
@@ -69,9 +74,6 @@ public class PeasantOffTask extends Task {
      */
     @Override
     public void interruptTask(Believes parameters) {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.setCurrentActivity(PeasantActivityType.PTW);
-        this.setTaskFinalized();
     }
 
     /**
@@ -80,9 +82,6 @@ public class PeasantOffTask extends Task {
      */
     @Override
     public void cancelTask(Believes parameters) {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.setCurrentActivity(PeasantActivityType.PTW);
-        this.setTaskFinalized();
     }
 
     /**
@@ -93,10 +92,6 @@ public class PeasantOffTask extends Task {
     @Override
     public boolean checkFinish(Believes parameters) {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.isNewDay()) {
-            return false;
-        } else {
-            return true;
-        }
+        return !believes.isNewDay();
     }
 }

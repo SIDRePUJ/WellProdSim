@@ -12,27 +12,23 @@ import BESA.Kernel.Agent.Event.DataBESA;
  */
 public class ToControlMessage extends DataBESA {
 
-    String peasantFamilyAlias;
-    int days;
-    boolean peasantOff;
+    private String peasantFamilyAlias;
+    private int days;
+    private boolean peasantAlive;
 
     public ToControlMessage(String peasantFamilyAlias, int days) {
-        this.days = days;
-        this.peasantFamilyAlias = peasantFamilyAlias;
+        this.setPeasantFamilyAlias(peasantFamilyAlias);
+        this.setDays(days);
     }
 
-    public ToControlMessage(String peasantFamilyAlias, int days, boolean peasantOff) {
-        this.peasantOff = peasantOff;
-        this.peasantFamilyAlias = peasantFamilyAlias;
-        this.days = days;
+    public ToControlMessage(String peasantFamilyAlias, int days, boolean alive) {
+        this.setPeasantAlive(alive);
+        this.setPeasantFamilyAlias(peasantFamilyAlias);
+        this.setDays(days);
     }
 
-    public boolean isPeasantOff() {
-        return peasantOff;
-    }
-
-    public void setPeasantOff(boolean peasantOff) {
-        this.peasantOff = peasantOff;
+    public void setPeasantAlive(boolean peasantAlive) {
+        this.peasantAlive = peasantAlive;
     }
 
     public String getPeasantFamilyAlias() {

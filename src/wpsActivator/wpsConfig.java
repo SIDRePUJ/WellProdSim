@@ -280,7 +280,7 @@ public final class wpsConfig {
         //getHighriskFarmerProfile
 
         double rnd = 1 + generateRandomNumber(
-                pfProfile.getVariance() * -1,
+                pfProfile.getVariance() * -2,
                 pfProfile.getVariance()
         );
         wpsReport.debug(rnd + " random number", "wpsConfig.getFarmerProfile");

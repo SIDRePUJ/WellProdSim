@@ -45,12 +45,11 @@ public class WasteTimeAndResourcesGoal extends GoalBDI {
         RationalRole wasteTimeAndResourcesRole = new RationalRole(
                 "WasteTimeAndResourcesTask",
                 wasteTimeAndResourcesPlan);
-        WasteTimeAndResourcesGoal wasteTimeAndResourcesGoal = new WasteTimeAndResourcesGoal(
+        return new WasteTimeAndResourcesGoal(
                 wpsStart.getPlanID(),
                 wasteTimeAndResourcesRole,
                 "WasteTimeAndResourcesTask",
                 GoalBDITypes.ATTENTION_CYCLE);
-        return wasteTimeAndResourcesGoal;
     }
 
     /**
@@ -71,22 +70,9 @@ public class WasteTimeAndResourcesGoal extends GoalBDI {
      * @throws KernellAgentEventExceptionBESA
      */
     @Override
-    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-            return 1;
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.getCurrentPeasantLeisureType() == PeasantLeisureType.WASTERESOURCE
-                && believes.getPeasantProfile().getMoney() > 0) {
+        if (believes.getPeasantProfile().getMoney() > 0) {
             return 1;
         } else {
             return 0;
@@ -111,13 +97,24 @@ public class WasteTimeAndResourcesGoal extends GoalBDI {
 
     /**
      *
+     * @param parameters
+     * @return
+     * @throws KernellAgentEventExceptionBESA
+     */
+    @Override
+    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
+        return 1;
+    }
+
+    /**
+     *
      * @param stateBDI
      * @return
      * @throws KernellAgentEventExceptionBESA
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return 0.8;
+        return 0.6;
     }
 
     /**
@@ -128,9 +125,7 @@ public class WasteTimeAndResourcesGoal extends GoalBDI {
      */
     @Override
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info(stateBDI.getMachineBDIParams().getPyramidGoals());
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
-        return believes.getPeasantProfile().getHealth() > 0;
+        return true;
     }
 
     /**

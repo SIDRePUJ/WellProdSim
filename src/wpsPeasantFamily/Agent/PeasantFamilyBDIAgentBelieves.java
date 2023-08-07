@@ -17,6 +17,15 @@ package wpsPeasantFamily.Agent;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+
+import BESA.ExceptionBESA;
+import BESA.Kernel.Agent.Event.EventBESA;
+import BESA.Kernel.System.AdmBESA;
+import BESA.Kernel.System.Directory.AgHandlerBESA;
+import wpsActivator.wpsStart;
+import wpsControl.Agent.ControlAgentGuard;
+import wpsPeasantFamily.Agent.Guards.FromControlGuard;
+import wpsPeasantFamily.Agent.Guards.ToControlMessage;
 import wpsPeasantFamily.Data.PeasantFamilyProfile;
 import rational.data.InfoData;
 import rational.mapping.Believes;
@@ -58,6 +67,8 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
     private boolean haveLoan;
     private boolean weekBlock;
     private boolean busy;
+    private double toPay;
+    private boolean loanDenied;
 
     private String internalCurrentDate;
     private String ptwDate;
@@ -85,6 +96,8 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
         this.newDay = true;
         this.weekBlock = false;
         this.priceList.clear();
+        this.loanDenied = false;
+        this.ptwDate = "";
 
         this.currentSeason = SeasonType.NONE;
         this.currentCropCare = CropCareType.NONE;
@@ -154,13 +167,8 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
         }
         this.robbedToday = false;
         this.askedForLoanToday = false;
-        //wpsReport.warn("internalCurrentDate= " + internalCurrentDate);
         this.internalCurrentDate = ControlCurrentDate.getInstance().getDatePlusOneDay(internalCurrentDate);
-        //wpsReport.warn("internalCurrentDate2= " + internalCurrentDate);
-        /*if (this.currentSeason == SeasonType.GROWING) {
-            this.currentCropCare = CropCareType.CHECK;
-        }*/
-        //wpsReport.debug(this.peasantProfile.getPeasantFamilyAlias() + " NEW DAY internalCurrentDate: " + internalCurrentDate);
+        wpsReport.debug(this.toJson(), this.getPeasantProfile().getPeasantFamilyAlias());
     }
 
     /**
@@ -241,9 +249,10 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
                     + this.peasantProfile.getPeasantFamilyAlias()
                     + " con "
                     + this.peasantProfile.getHealth()
-                    + " de Salud."
+                    + " de Salud.",
+                    this.getPeasantProfile().getPeasantFamilyAlias()
             );*/
-            wpsReport.debug(toJson(), this.getPeasantProfile().getPeasantFamilyAlias());
+            //wpsReport.debug(toJson(), this.getPeasantProfile().getPeasantFamilyAlias());
             this.makeNewDay();
         } else {
             /*wpsReport.info("⏱️⏱️  "
@@ -517,7 +526,7 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
                 + ",newDay=" + newDay + ",weekBlock="
                 + weekBlock + ",busy=" + busy + ",askedForLoanToday=" + askedForLoanToday
                 + ",robbedToday=" + robbedToday + ",checkedToday=" + checkedToday
-                + ",internalCurrentDate=" + internalCurrentDate
+                + ",internalCurrentDate=" + internalCurrentDate + ",toPay=" + toPay
                 + peasantProfile.toJson();
     }
 
@@ -546,4 +555,36 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
                 + peasantProfile.toString();
     }
 
+    public double getToPay() {
+        return toPay;
+    }
+
+    public void setToPay(double toPay) {
+        this.toPay = toPay;
+    }
+    public void discountToPay(double toPay) {
+        this.toPay -= toPay;
+    }
+
+    public boolean isLoanDenied() {
+        return loanDenied;
+    }
+
+    public void setLoanDenied(boolean loanDenied) {
+        this.loanDenied = loanDenied;
+    }
+
+    public void decreaseHealth() {
+        this.peasantProfile.decreaseHealth();
+        if (this.getPeasantProfile().getHealth()<=0) {
+            try {
+                wpsReport.debug("👻👻 murió agente " + this.peasantProfile.getPeasantFamilyAlias() + " 👻👻", this.peasantProfile.getPeasantFamilyAlias());
+                AdmBESA adm = AdmBESA.getInstance();
+                AgHandlerBESA agHandler = adm.getHandlerByAlias(this.peasantProfile.getPeasantFamilyAlias());
+                adm.killAgent(agHandler.getAgId(),wpsStart.PASSWD);
+            } catch (ExceptionBESA ex) {
+                wpsReport.error(ex, this.peasantProfile.getPeasantFamilyAlias());
+            }
+        }
+    }
 }

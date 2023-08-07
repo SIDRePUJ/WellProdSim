@@ -24,6 +24,8 @@ import wpsPeasantFamily.Agent.Guards.FromControlGuard;
 import wpsPeasantFamily.Agent.Guards.ToControlMessage;
 import wpsViewer.Agent.wpsReport;
 
+import java.util.Map;
+
 /**
  *
  * @author jairo
@@ -41,33 +43,37 @@ public class ControlAgentGuard extends GuardBESA {
         String agentAlias = toControlMessage.getPeasantFamilyAlias();
         ControlAgentState state = (ControlAgentState) this.getAgent().getState();
 
-        if (state.getAgentMap().containsKey(agentAlias)) {
-            wpsReport.warn(agentAlias + " has already arrived.", "ControlAgentGuard");
-            return;
-        }
+        //wpsReport.debug(state.printAgentMap(), "ControlAgentGuard");
 
-        wpsReport.warn(agentAlias + " Arrive - " + toControlMessage.getDays(), "ControlAgentGuard");
+        state.modifyAgentMap(agentAlias);
 
-        state.increaseActiveAgents();
-        state.modifyAgentMap(agentAlias, true);
-
-        wpsReport.warn(state.getActiveAgentsCount() + " Finished.", "ControlAgentGuard");
-
-        if (state.getActiveAgentsReady()) {
+        if (state.allAgentsAlive()) {
             try {
-                for (int i = 1; i <= wpsStart.peasantFamiliesAgents; i++) {
-                    AdmBESA adm = AdmBESA.getInstance();
-                    EventBESA eventBesa = new EventBESA(FromControlGuard.class.getName(), null);
-                    AgHandlerBESA agHandler = adm.getHandlerByAlias("PeasantFamily_" + i);
+                AdmBESA adm = AdmBESA.getInstance();
+                EventBESA eventBesa = new EventBESA(FromControlGuard.class.getName(), null);
+                for (String agentName : state.getAliveAgentMap().keySet()) {
+                    AgHandlerBESA agHandler = adm.getHandlerByAlias(agentName);
                     agHandler.sendEvent(eventBesa);
-                    //wpsReport.warn("Activando PeasantFamily_" + i);
+                    wpsReport.debug("Unblocking event to " + agentName, "ControlAgentGuard");
                 }
             } catch (ExceptionBESA ex) {
                 wpsReport.error(ex, "ControlAgentGuard");
             }
-
-            state.resetActiveAgents();
+            //state.resetActiveAgents();
             currentDate = ControlCurrentDate.getInstance().getDatePlusXDaysAndUpdate(wpsStart.DAYS_TO_CHECK);
+            wpsReport.debug("Current Date General: " + currentDate, "ControlAgentState");
+        }else{
+            int trueCount = 0;
+            int falseCount = 0;
+
+            for (Boolean value : state.getAliveAgentMap().values()) {
+                if (value) {
+                    trueCount++;
+                } else {
+                    falseCount++;
+                }
+            }
+            wpsReport.debug("Agentes llegaron: " + trueCount + " - Agentes ausentes: " + falseCount, "ControlAgentState");
         }
 
         if (currentDate.contains("2023")) {

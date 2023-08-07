@@ -49,7 +49,7 @@ public class StealingOutOfNecessityTask extends Task {
         }
         // Puede pasarle algo mal
         if (Math.random() < 0.6) {
-            believes.getPeasantProfile().decreaseHealth();
+            believes.decreaseHealth();
         }
         believes.setCurrentMoneyOrigin(MoneyOriginType.ROBERY);
         believes.setRobbedToday();

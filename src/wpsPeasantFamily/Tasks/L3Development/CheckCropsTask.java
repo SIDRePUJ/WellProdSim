@@ -57,6 +57,12 @@ public class CheckCropsTask extends Task {
         if (believes.getPeasantProfile().getWaterAvailable() <= waterUsed) {
             believes.setCurrentResourceNeededType(ResourceNeededType.WATER);
         }
+        if (believes.getPeasantProfile().getTools() <= 5){
+            believes.setCurrentResourceNeededType(ResourceNeededType.TOOLS);
+        }
+        if (believes.getPeasantProfile().getSeeds() <= 5){
+            believes.setCurrentResourceNeededType(ResourceNeededType.SEEDS);
+        }
 
         try {
             AdmBESA adm = AdmBESA.getInstance();

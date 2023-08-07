@@ -44,12 +44,11 @@ public class ObtainToolsGoal extends GoalBDI {
         RationalRole obtainToolsRole = new RationalRole(
                 "ObtainToolsTask",
                 obtainToolsPlan);
-        ObtainToolsGoal obtainToolsGoalBDI = new ObtainToolsGoal(
+        return new ObtainToolsGoal(
                 wpsStart.getPlanID(),
                 obtainToolsRole,
                 "ObtainToolsTask",
                 GoalBDITypes.REQUIREMENT);
-        return obtainToolsGoalBDI;
     }
 
     /**
@@ -66,31 +65,13 @@ public class ObtainToolsGoal extends GoalBDI {
 
     /**
      *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.getPeasantProfile().getMoney() > 20000) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     *
-     * @param parameters
+     * @param parameters Believes
      * @return
      * @throws KernellAgentEventExceptionBESA
      */
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        //wpsReport.info("PlantingSeason=" + believes.getProfile().isPlantingSeason());
         if (believes.getCurrentResourceNeededType() == ResourceNeededType.TOOLS) {
             return 1;
         } else {
@@ -100,7 +81,7 @@ public class ObtainToolsGoal extends GoalBDI {
 
     /**
      *
-     * @param parameters
+     * @param parameters Believes
      * @return
      * @throws KernellAgentEventExceptionBESA
      */
@@ -113,6 +94,17 @@ public class ObtainToolsGoal extends GoalBDI {
         } else {
             return 0;
         }
+    }
+
+    /**
+     *
+     * @param parameters Believes
+     * @return
+     * @throws KernellAgentEventExceptionBESA
+     */
+    @Override
+    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
+        return 1;
     }
 
     /**

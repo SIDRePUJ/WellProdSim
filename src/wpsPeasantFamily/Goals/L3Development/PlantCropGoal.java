@@ -76,20 +76,9 @@ public class PlantCropGoal extends GoalBDI {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         if (!believes.getPriceList().isEmpty()
                 && believes.getPeasantProfile().getTools() > 0
-                && believes.getPeasantProfile().getSeeds() > 0
-                && believes.getPeasantProfile().getWaterAvailable() > 0) {
-            //wpsReport.warn("PLANTANDO VIABLE");
+                && believes.getPeasantProfile().getSeeds() > 0) {
             return 1;
         } else {
-            if (believes.getPeasantProfile().getTools() <= 50){
-                believes.setCurrentResourceNeededType(ResourceNeededType.TOOLS);
-            }
-            if (believes.getPeasantProfile().getSeeds() <= 50){
-                believes.setCurrentResourceNeededType(ResourceNeededType.SEEDS);
-            }
-            if (believes.getPeasantProfile().getWaterAvailable() <= 50){
-                believes.setCurrentResourceNeededType(ResourceNeededType.WATER);
-            }
             return 0;
         }
     }
@@ -104,7 +93,6 @@ public class PlantCropGoal extends GoalBDI {
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         if (believes.getCurrentSeason() == SeasonType.PLANTING) {
-            //wpsReport.warn("PLANTANDO DETECTADO");
             return 1;
         } else {
             return 0;

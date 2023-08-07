@@ -6,12 +6,12 @@
       <sourceFolder url="file://$MODULE_DIR$/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="17" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="libs" level="project" />
     <orderEntry type="module" module-name="KernelBESA" exported="" />
-    <orderEntry type="module" module-name="RationalBESA" exported="" />
-    <orderEntry type="module" module-name="BDIBESA" exported="" />
     <orderEntry type="module" module-name="LocalBESA" exported="" />
-    <orderEntry type="library" exported="" name="CommonLibs" level="project" />
+    <orderEntry type="module" module-name="BDIBESA" exported="" />
+    <orderEntry type="module" module-name="RationalBESA" exported="" />
   </component>
 </module>

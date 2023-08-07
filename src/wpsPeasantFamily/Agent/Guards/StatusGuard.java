@@ -34,7 +34,7 @@ public class StatusGuard extends GuardBESA {
 
     /**
      *
-     * @param event
+     * @param event Event rising the Guard
      */
     @Override
     public void funcExecGuard(EventBESA event) {

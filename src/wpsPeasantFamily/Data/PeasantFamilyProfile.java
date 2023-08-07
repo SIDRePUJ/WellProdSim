@@ -234,6 +234,9 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      */
     public void discountDailyMoney() {
         this.money = this.money - this.peasantFamilyMinimalVital;
+        if (this.money <= 0){
+            this.decreaseHealth();
+        }
     }
 
     /**

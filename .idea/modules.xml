@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../BDIBESA/BDIBESA.iml" filepath="$PROJECT_DIR$/../BDIBESA/BDIBESA.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../KernelBESA/KernelBESA.iml" filepath="$PROJECT_DIR$/../KernelBESA/KernelBESA.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../LocalBESA/LocalBESA.iml" filepath="$PROJECT_DIR$/../LocalBESA/LocalBESA.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../RationalBESA/RationalBESA.iml" filepath="$PROJECT_DIR$/../RationalBESA/RationalBESA.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WellProdSim.iml" filepath="$PROJECT_DIR$/WellProdSim.iml" />
+    </modules>
+  </component>
+</project>

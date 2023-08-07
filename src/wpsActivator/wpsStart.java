@@ -15,13 +15,11 @@
 package wpsActivator;
 
 import BESA.ExceptionBESA;
-import BESA.Kernel.Agent.AgentBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 
 import wpsControl.Agent.ControlAgent;
@@ -42,10 +40,10 @@ import wpsViewer.Agent.wpsViewerAgent;
 public class wpsStart {
 
     private static int PLAN_ID = 0;
-    final private static double PASSWD = 0.91;
+    final public static double PASSWD = 0.91;
     public static wpsConfig config;
-    public static int peasantFamiliesAgents = 100;
-    private final static int SIMULATION_TIME = 15;
+    public static int peasantFamiliesAgents = 10;
+    private final static int SIMULATION_TIME = 60;
     public final static int DAYS_TO_CHECK = 7;
     static final long startTime = System.currentTimeMillis();
 
@@ -64,15 +62,19 @@ public class wpsStart {
         List<PeasantFamilyBDIAgent> peasantFamilyBDIAgents = new ArrayList<>();
 
         try {
-
-            ControlAgent controlAgent = ControlAgent.createAgent(config.getControlAgentName(), PASSWD);
-            SocietyAgent societyAgent = SocietyAgent.createAgent(config.getSocietyAgentName(), PASSWD);
-            BankAgent bankAgent = BankAgent.createBankAgent(config.getBankAgentName(), PASSWD);
-            MarketAgent marketAgent = MarketAgent.createAgent(config.getMarketAgentName(), PASSWD);
-            PerturbationAgent perturbationAgent = PerturbationAgent.createAgent(PASSWD);
             wpsViewerAgent viewerAgent = wpsViewerAgent.createAgent(config.getViewerAgentName(), PASSWD);
+            viewerAgent.start();
+            ControlAgent controlAgent = ControlAgent.createAgent(config.getControlAgentName(), PASSWD);
+            controlAgent.start();
+            SocietyAgent societyAgent = SocietyAgent.createAgent(config.getSocietyAgentName(), PASSWD);
+            societyAgent.start();
+            BankAgent bankAgent = BankAgent.createBankAgent(config.getBankAgentName(), PASSWD);
+            bankAgent.start();
+            MarketAgent marketAgent = MarketAgent.createAgent(config.getMarketAgentName(), PASSWD);
+            marketAgent.start();
+            PerturbationAgent perturbationAgent = PerturbationAgent.createAgent(PASSWD);
+            perturbationAgent.start();
 
-            // @TODO: Regular and Proactive Peasant Agents
             for (int i = 0; i < peasantFamiliesAgents; i++) {
                 PeasantFamilyBDIAgent peasantFamilyBDIAgent = new PeasantFamilyBDIAgent(
                         config.getUniqueFarmerName(),
@@ -82,17 +84,8 @@ public class wpsStart {
             }
 
             // Simulation Start
-            startAllAgents(
-                    peasantFamilyBDIAgents,
-                    viewerAgent,
-                    controlAgent,
-                    societyAgent,
-                    bankAgent,
-                    marketAgent,
-                    perturbationAgent
-            );
+            startPFAgents(peasantFamilyBDIAgents);
             printHeader();
-
 
         } catch (Exception ex) {
             wpsReport.error(ex, "wpsStart");
@@ -112,21 +105,15 @@ public class wpsStart {
      * Starts all the agents and begins the simulation.
      *
      * @param peasantFamilies the list of peasant family agents
-     * @param wpsAgents the other simulation agents
      * @throws ExceptionBESA if there is an exception while starting the agents
      */
-    private static void startAllAgents(List<PeasantFamilyBDIAgent> peasantFamilies, AgentBESA... wpsAgents) throws ExceptionBESA {
+    private static void startPFAgents(List<PeasantFamilyBDIAgent> peasantFamilies) throws ExceptionBESA {
 
         try {
-            // Starting general simulation agents
-            for (AgentBESA agent : wpsAgents) {
-                agent.start();
-                wpsReport.info(agent.getAlias() + " Started", "wpsStart");
-            }
             // Starting families agents
             for (PeasantFamilyBDIAgent peasantFamily : peasantFamilies) {
                 peasantFamily.start();
-                //wpsReport.info(peasantFamily.getAlias() + " Started");
+                wpsReport.info(peasantFamily.getAlias() + " Started", "wpsStart");
             }
             // first heart beat to families
             for (int i = 1; i <= peasantFamiliesAgents; i++) {
@@ -135,7 +122,6 @@ public class wpsStart {
                 AgHandlerBESA agHandler = adm.getHandlerByAlias("PeasantFamily_" + i);
                 agHandler.sendEvent(eventBesa);
             }
-
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, "wpsStart");
         }
@@ -151,12 +137,12 @@ public class wpsStart {
     @SuppressWarnings("rawtypes")
     public static void stopSimulation() throws ExceptionBESA {
         getStatus();
-        AdmBESA adm = AdmBESA.getInstance();
+        /*AdmBESA adm = AdmBESA.getInstance();
         Enumeration enumeration = adm.getIdList();
         while (enumeration.hasMoreElements()) {
             adm.killAgent((String) enumeration.nextElement(), PASSWD);
         }
-        adm.kill(0.09);
+        adm.kill(0.09);*/
         // Calculate the time of simulation
         wpsReport.info("Simulation finished in " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds.\n\n\n\n", "wpsStart");
         System.exit(0);

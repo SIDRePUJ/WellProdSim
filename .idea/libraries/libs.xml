@@ -1,0 +1,19 @@
+<component name="libraryTable">
+  <library name="libs">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/resources/libs/gson-2.10.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/resources/libs/jheaps-0.13.jar!/" />
+      <root url="jar://$PROJECT_DIR$/resources/libs/slf4j-api-2.0.7-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/resources/libs/logback-core-1.4.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/resources/libs/joda-time-2.12.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/resources/libs/json-20220924.jar!/" />
+      <root url="jar://$PROJECT_DIR$/resources/libs/logback-classic-1.4.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/resources/libs/jgrapht-core-1.5.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/resources/libs/slf4j-api-2.0.7-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/resources/libs/slf4j-api-2.0.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/resources/libs/snakeyaml-engine-2.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

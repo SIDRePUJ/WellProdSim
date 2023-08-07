@@ -51,9 +51,6 @@ public class LeisureActivitiesTask extends Task {
      */
     @Override
     public void interruptTask(Believes parameters) {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.setCurrentPeasantLeisureType(PeasantLeisureType.NONE);
-        this.setTaskFinalized();
     }
 
     /**
@@ -62,9 +59,6 @@ public class LeisureActivitiesTask extends Task {
      */
     @Override
     public void cancelTask(Believes parameters) {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.setCurrentPeasantLeisureType(PeasantLeisureType.NONE);
-        this.setTaskFinalized();
     }
 
     /**

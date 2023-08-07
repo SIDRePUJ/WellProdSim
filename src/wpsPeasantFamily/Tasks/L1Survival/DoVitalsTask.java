@@ -56,25 +56,18 @@ public class DoVitalsTask extends Task {
     public void executeTask(Believes parameters) {
         //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.setNewDay(false);
 
-        // Peasant Family pass the way
-        //if (believes.getPeasantProfile().getHealth() <= 0) {
-        //wpsReport.fatal("Pass the Way");
-        //    believes.useTime(believes.getTimeLeftOnDay());
-        //    believes.setCurrentActivity(PeasantActivityType.PTW);
-        //    believes.setPtwDate(believes.getInternalCurrentDate());
-        //} else {
-        // Starving peasant
-        if (believes.getPeasantProfile().getMoney()
-                < believes.getPeasantProfile().getPeasantFamilyMinimalVital()) {
-            believes.getPeasantProfile().decreaseHealth();
-        } else {
-            // increase health after rest
-            believes.getPeasantProfile().increaseHealth();
-            // Vitals about money and food
-            believes.getPeasantProfile().discountDailyMoney();
-        }
+        believes.setNewDay(false);
+        // Use time
+        believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
+        believes.getPeasantProfile().discountDailyMoney();
+
+        /*wpsReport.debug("DoVitalsTask "
+                        + "health: " + believes.getPeasantProfile().getHealth()
+                        + " currentDate: " + believes.getInternalCurrentDate(),
+                believes.getPeasantProfile().getPeasantFamilyAlias()
+        );*/
+
         // Check crop season
         if (DateHelper.differenceDaysBetweenTwoDates(
                 believes.getInternalCurrentDate(),
@@ -84,8 +77,6 @@ public class DoVitalsTask extends Task {
 
         // En que gasta el tiempo el día
         believes.setRandomCurrentPeasantLeisureType();
-        // Use time
-        believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
         // Check debts
         checkBankDebt(believes);
         // Check Sync
@@ -101,16 +92,14 @@ public class DoVitalsTask extends Task {
      * @param parameters
      */
     @Override
-    public void interruptTask(Believes parameters) {
-    }
+    public void interruptTask(Believes parameters) {}
 
     /**
      *
      * @param parameters
      */
     @Override
-    public void cancelTask(Believes parameters) {
-    }
+    public void cancelTask(Believes parameters) {}
 
     /**
      *

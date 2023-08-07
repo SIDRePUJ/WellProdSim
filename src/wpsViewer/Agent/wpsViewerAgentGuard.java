@@ -18,9 +18,10 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
+
 
 /**
- *
  * @author jairo
  */
 public class wpsViewerAgentGuard extends GuardBESA {
@@ -28,20 +29,23 @@ public class wpsViewerAgentGuard extends GuardBESA {
     private static final Logger logger = LoggerFactory.getLogger(wpsReport.class);
 
     /**
-     *
      * @param event
      */
     @Override
     public void funcExecGuard(EventBESA event) {
         wpsViewerMessage viewerMessage = (wpsViewerMessage) event.getData();
-        switch (viewerMessage.getLevel()) {
-            case "TRACE" -> logger.trace(viewerMessage.getPeasantAlias() + " " + viewerMessage.getPeasantMessage());
-            case "DEBUG" -> logger.debug(viewerMessage.getPeasantAlias() + " " + viewerMessage.getPeasantMessage());
-            case "WARN" -> logger.warn(viewerMessage.getPeasantAlias() + " " + viewerMessage.getPeasantMessage());
-            case "ERROR" -> logger.error(viewerMessage.getPeasantAlias() + " " + viewerMessage.getPeasantMessage());
-            default -> logger.info(viewerMessage.getPeasantAlias() + " " + viewerMessage.getPeasantMessage());
+        try {
+            MDC.put("peasantAlias", viewerMessage.getPeasantAlias());
+            switch (viewerMessage.getLevel()) {
+                case "TRACE" -> logger.trace(viewerMessage.getPeasantMessage());
+                case "DEBUG" -> logger.debug(viewerMessage.getPeasantMessage());
+                case "WARN" -> logger.warn(viewerMessage.getPeasantMessage());
+                case "ERROR" -> logger.error(viewerMessage.getPeasantMessage());
+                default -> logger.info(viewerMessage.getPeasantMessage());
+            }
+        } finally {
+            MDC.clear();
         }
-
     }
 
 }

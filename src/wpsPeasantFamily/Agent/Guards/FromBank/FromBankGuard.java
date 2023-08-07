@@ -57,7 +57,9 @@ public class FromBankGuard extends GuardBESA {
                     believes.getPeasantProfile().increaseMoney(
                             fromBankMessage.getAmount()
                     );
+                    believes.setToPay(fromBankMessage.getAmount());
                     believes.setHaveLoan(true);
+                    believes.setLoanDenied(true);
                     believes.setCurrentMoneyOrigin(MoneyOriginType.LOAN);
                     break;
                 case APPROBED_SOCIAL:
@@ -73,6 +75,7 @@ public class FromBankGuard extends GuardBESA {
                 case DENIED_FORMAL_LOAN:
                     // @TODO: Pedir prestado en otro lado? cancelar?
                     wpsReport.info("Denegado DENIED_FORMAL_LOAN", this.getAgent().getAlias());
+                    believes.setLoanDenied(true);
                     believes.setCurrentMoneyOrigin(MoneyOriginType.LOAN_DENIED);
                     break;
                 case DENIED_INFORMAL_LOAN:
@@ -80,6 +83,7 @@ public class FromBankGuard extends GuardBESA {
                     //if (Math.random() < 0.2) {
                     //believes.setCurrentMoneyOrigin(MoneyOriginType.BENEFICENCIA);
                     wpsReport.info("Denegado DENIED_INFORMAL_LOAN", this.getAgent().getAlias());
+                    believes.setLoanDenied(true);
                     believes.setCurrentMoneyOrigin(MoneyOriginType.INFORMAL_DENIED);
                     break;
                 case TERM_TO_PAY:
@@ -87,9 +91,14 @@ public class FromBankGuard extends GuardBESA {
                     believes.getPeasantProfile().setLoanAmountToPay(
                             fromBankMessage.getAmount()
                     );
+                    if (fromBankMessage.getAmount()==0){
+                        believes.setHaveLoan(false);
+                        believes.setLoanDenied(false);
+                    }
                     break;
                 case TERM_PAYED:
                     believes.setCurrentMoneyOrigin(MoneyOriginType.NONE);
+                    believes.discountToPay(believes.getPeasantProfile().getLoanAmountToPay());
                     believes.getPeasantProfile().setLoanAmountToPay(0);
                     break;
             }

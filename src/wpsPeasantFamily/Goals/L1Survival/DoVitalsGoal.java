@@ -25,6 +25,7 @@ import wpsPeasantFamily.Agent.PeasantFamilyBDIAgentBelieves;
 import wpsPeasantFamily.Tasks.L1Survival.DoVitalsTask;
 import wpsActivator.wpsStart;
 import wpsPeasantFamily.Data.PeasantActivityType;
+import wpsViewer.Agent.wpsReport;
 
 /**
  *
@@ -70,12 +71,11 @@ public class DoVitalsGoal extends GoalBDI {
     @Override
     public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        /*if (believes.getPeasantProfile().getMoney() >= 0) {
+        if (believes.getPeasantProfile().getHealth() > 0) {
             return 1;
         } else {
             return 0;
-        }*/
-        return 1;
+        }
     }
 
     /**
@@ -87,7 +87,7 @@ public class DoVitalsGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.isNewDay() && believes.getCurrentActivity() != PeasantActivityType.PTW) {
+        if (believes.isNewDay()) {
             return 1;
         } else {
             return 0;
@@ -124,8 +124,7 @@ public class DoVitalsGoal extends GoalBDI {
      */
     @Override
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
-        return believes.getPeasantProfile().getHealth() > 0;
+        return true;
     }
 
     /**
@@ -137,6 +136,7 @@ public class DoVitalsGoal extends GoalBDI {
     @Override
     public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        //wpsReport.debug("DoVitalsGoal.goalSucceeded: " + believes.toJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
         return !believes.isNewDay();
     }
 

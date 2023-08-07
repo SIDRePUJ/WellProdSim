@@ -42,12 +42,9 @@ public class MaintainHouseTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        // @TODO: Cambiar a la venta real con el agente social market
         believes.getPeasantProfile().increaseHouseCondition();
-        believes.getPeasantProfile().useTools();
-        believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
+        believes.useTime(believes.getTimeLeftOnDay());
         this.setFinished();
     }
 

@@ -33,50 +33,41 @@ public class WasteTimeAndResourcesTask extends Task {
 
     /**
      *
-     * @param parameters
+     * @param parameters Believes
      */
     @Override
     public void executeTask(Believes parameters) {
-        //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        //believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
         believes.useTime(believes.getTimeLeftOnDay());
-        believes.getPeasantProfile().useMoney(10000);
+        believes.getPeasantProfile().useMoney(1000);
         believes.setCurrentPeasantLeisureType(PeasantLeisureType.NONE);
         this.setTaskFinalized();
     }
 
     /**
      *
-     * @param parameters
+     * @param parameters Believes
      */
     @Override
     public void interruptTask(Believes parameters) {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.setCurrentPeasantLeisureType(PeasantLeisureType.NONE);
-        this.setTaskFinalized();
     }
 
     /**
      *
-     * @param parameters
+     * @param parameters Believes
      */
     @Override
     public void cancelTask(Believes parameters) {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.setCurrentPeasantLeisureType(PeasantLeisureType.NONE);
-        this.setTaskFinalized();
     }
 
     /**
      *
-     * @param parameters
-     * @return
+     * @param parameters Believes
+     * @return boolean
      */
     @Override
     public boolean checkFinish(Believes parameters) {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        //wpsReport.debug("check: " + believes.getCurrentPeasantLeisureType());
         return believes.getCurrentPeasantLeisureType() == PeasantLeisureType.NONE;
     }
 }

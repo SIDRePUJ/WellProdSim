@@ -40,32 +40,24 @@ import wpsViewer.Agent.wpsReport;
  */
 public class ObtainToolsTask extends Task {
 
-    private boolean finished;
-
     /**
      *
      */
     public ObtainToolsTask() {
-        ////wpsReport.info("");
-        this.finished = false;
     }
 
     /**
      *
-     * @param parameters
+     * @param parameters Believes
      */
     @Override
     public void executeTask(Believes parameters) {
-        //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
-        //wpsReport.info("$ Asking for a LOAN to the Bank " + believes.getProfile().getMoney());
 
-        // @TODO: Se debe calcular cuanto necesitas prestar hasta que se coseche.
         try {
             AdmBESA adm = AdmBESA.getInstance();
             AgHandlerBESA ah = adm.getHandlerByAlias(wpsStart.config.getMarketAgentName());
-
             MarketMessage marketMessage = new MarketMessage(
                     BUY_TOOLS,
                     believes.getPeasantProfile().getPeasantFamilyAlias(),
@@ -75,67 +67,41 @@ public class ObtainToolsTask extends Task {
                     MarketAgentGuard.class.getName(),
                     marketMessage);
             ah.sendEvent(ev);
+            wpsReport.debug("ObtainToolsTask.executeTask: "
+                    + believes.getPeasantProfile().getPeasantFamilyAlias()
+                    + " BUY_TOOLS",
+                    believes.getPeasantProfile().getPeasantFamilyAlias()
+            );
 
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, "obtainToolsTask.executeTask");
         }
-        //this.setTaskWaitingForExecution();
         believes.setCurrentResourceNeededType(ResourceNeededType.NONE);
-        this.setFinished();
     }
 
     /**
      *
-     * @return
-     */
-    public boolean isFinished() {
-        ////wpsReport.info("");
-        return finished;
-    }
-
-    /**
-     *
-     */
-    public void setFinished() {
-        ////wpsReport.info("");
-        this.finished = true;
-        this.setTaskFinalized();
-    }
-
-    /**
-     *
-     * @param parameters
+     * @param parameters Believes
      */
     @Override
-    public void interruptTask(Believes parameters) {
-        this.setFinished();
-    }
+    public void interruptTask(Believes parameters) {}
 
     /**
      *
-     * @param parameters
+     * @param parameters Believes
      */
     @Override
-    public void cancelTask(Believes parameters) {
-        this.setFinished();
-    }
+    public void cancelTask(Believes parameters) {}
+
 
     /**
      *
-     * @return
-     */
-    public boolean isExecuted() {
-        return finished;
-    }
-
-    /**
-     *
-     * @param believes
+     * @param parameters Believes
      * @return
      */
     @Override
-    public boolean checkFinish(Believes believes) {
-        ////wpsReport.info("");
-        return isExecuted();
+    public boolean checkFinish(Believes parameters) {
+        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        return believes.getCurrentResourceNeededType() == ResourceNeededType.NONE;
     }
 }

@@ -39,13 +39,16 @@ public class ControlAgent extends AgentBESA {
     }
 
     public static ControlAgent createAgent(String alias, double passwd) throws ExceptionBESA{        
-        ControlAgent controlAgent = new ControlAgent(alias, createState(), createStruct(new StructBESA()), passwd);
-        return controlAgent;        
+        return new ControlAgent(alias, createState(), createStruct(new StructBESA()), passwd);
     }
     
     private static StructBESA createStruct(StructBESA structBESA) throws ExceptionBESA {
         structBESA.addBehavior("ControlAgentGuard");
         structBESA.bindGuard("ControlAgentGuard", ControlAgentGuard.class);
+        structBESA.addBehavior("AliveAgentGuard");
+        structBESA.bindGuard("AliveAgentGuard", AliveAgentGuard.class);
+        structBESA.addBehavior("DeadAgentGuard");
+        structBESA.bindGuard("DeadAgentGuard", DeadAgentGuard.class);
         return structBESA;
     }
     

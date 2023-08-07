@@ -72,22 +72,11 @@ public class ObtainWaterGoal extends GoalBDI {
      * @throws KernellAgentEventExceptionBESA
      */
     @Override
-    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        return 1;
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         if (believes.getCurrentResourceNeededType() == ResourceNeededType.WATER
-                && believes.getPeasantProfile().getMoney() >= 20000) {
-            //wpsReport.warn("Detectado ");
+                && believes.getPeasantProfile().getMoney() >= 1000000) {
+            wpsReport.warn("Detectada necesidad de comprar agua ", believes.getPeasantProfile().getPeasantFamilyAlias());
             return 1;
         } else {
             return 0;
@@ -104,11 +93,22 @@ public class ObtainWaterGoal extends GoalBDI {
     public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         if (believes.haveTimeAvailable(TimeConsumedBy.ObtainWaterTask)) {
-            //wpsReport.warn("Plausible ");
             return 1;
         } else {
             return 0;
         }
+    }
+
+    /**
+     *
+     * @param parameters
+     * @return
+     * @throws KernellAgentEventExceptionBESA
+     */
+    @Override
+    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
+        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        return 1;
     }
 
     /**
@@ -131,10 +131,7 @@ public class ObtainWaterGoal extends GoalBDI {
      */
     @Override
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info(stateBDI.getMachineBDIParams().getPyramidGoals());
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
-        //wpsReport.warn("legal ");
-        return believes.getPeasantProfile().getHealth() > 0;
+        return true;
     }
 
     /**
